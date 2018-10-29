@@ -1,0 +1,12 @@
+-*- mode: org -*-
+
+#+TITLE: TODO list
+#+STARTUP: indent
+
+* REST API
+
+Add the REST API of mastodon. See mastodon [[https://docs.joinmastodon.org/][documentations]].
+
+* Documentation
+
+** texi documentation
