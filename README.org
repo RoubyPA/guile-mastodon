@@ -13,3 +13,11 @@ Guile-mastodon use autotools build system.
 make
 make install
 #+END_SRC
+
+** Use GNU Guix
+
+Guile-mastodon is available with local Guix package.
+
+#+BEGIN_SRC shell
+guix build -f guix.scm
+#+END_SRC
