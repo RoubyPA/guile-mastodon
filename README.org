@@ -1,2 +1,15 @@
 #+TITLE: Guile-Mastodon
 #+STARTUP: indent
+
+* Installation
+
+** Use autotools
+
+Guile-mastodon use autotools build system.
+
+#+BEGIN_SRC shell
+./bootstrap
+./configure
+make
+make install
+#+END_SRC
