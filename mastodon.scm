@@ -16,6 +16,17 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 (define-module (mastodon)
-  #:export (guile-mastodon-version))
+  #:use-module (srfi srfi-9)
+  #:export (guile-mastodon-version
+            <mastodon-instance>))
 
 (define guile-mastodon-version "0.0.1")
+
+
+;;; Define type
+(define-record-type <mastodon-instance>
+  (instance name url token)
+  instance?
+  (name  instance-name)
+  (url   instance-url)
+  (token instance-token))
