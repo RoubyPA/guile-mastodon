@@ -37,7 +37,8 @@
      ("automake" ,automake)
      ("pkg-config" ,pkg-config)))
   (propagated-inputs
-   `(("guile" ,guile-2.2)))
+   `(("guile" ,guile-2.2)
+     ("guile-json" ,guile-json)))
   (home-page "https://framagit.org/prouby/guile-mastodon")
   (synopsis "Guile mastodon module.")
   (description "Mastodon module for guile.")

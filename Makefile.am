@@ -1,7 +1,8 @@
 include guile.am
 
 SOURCES =					\
-  mastodon.scm
+  mastodon.scm					\
+  mastodon/api.scm
 
 EXTRA_DIST =					\
   README.org					\
