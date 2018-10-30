@@ -21,3 +21,38 @@ Guile-mastodon is available with local Guix package.
 #+BEGIN_SRC shell
 guix build -f guix.scm
 #+END_SRC
+
+
+* Using
+
+** Create new instance record
+
+#+BEGIN_SRC scheme
+(use-modules (mastodon)
+             (mastodon api)
+             (mastodon instance)
+
+;; Create new instance without token
+(instance "Framapiaf"              ;; Instance name
+          "https://framapiaf.org"  ;; Instance url
+          "<acces_token>")         ;; Access token
+#+END_SRC
+
+** Example
+
+The following example display json of all accout followers.
+
+#+BEGIN_SRC scheme
+(use-modules (json)
+             (mastodon)
+             (mastodon api)
+             (mastodon instance))
+
+(let* ((inst (instance "Framapiaf" "https://framapiaf.org"
+                       "<token>"))
+       (my-accounts (mtd-accounts-verify-credentials inst))
+       (id          (hash-ref my-accounts "id"))
+       (followers   (mtd-accounts-id-followers inst id)))
+  (display (scm->json-string followers))
+  (newline))
+#+END_SRC
