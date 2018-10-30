@@ -17,7 +17,12 @@
 
 (define-module (mastodon instance)
   #:use-module (srfi srfi-9)
-  #:export (<mastodon-instance>))
+  #:export (<mastodon-instance>
+            instance
+            instance?
+            instance-name
+            instance-url
+            instance-token))
 
 ;;; Define type
 (define-record-type <mastodon-instance>
