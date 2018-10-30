@@ -25,7 +25,8 @@
   #:use-module (srfi srfi-11)
   #:use-module (json)
   #:export (mastodon-api-get
-            mtd-accounts-by-id))
+            mtd-accounts-by-id
+            mtd-accounts-verify-credentials))
 
 (define (mastodon-api-get request token)
   "Send http get request to mastodon instance. REQUEST is url of api, and
@@ -36,7 +37,7 @@ error with `mastodon' tag."
                           #:body #f
                           #:version '(1 . 1)
                           #:keep-alive? #f
-                          #:headers '()
+                          #:headers `((Authorization . ,(string-append "Bearer " token)))
                           #:decode-body? #t
                           #:streaming? #f)))
     (match (response-code res)
@@ -51,4 +52,12 @@ error with `mastodon' tag."
 hash-table of json response."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/" id)))
+    (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-accounts-verify-credentials instance)
+  "Send request to INSTANCE to get current user information. Return the
+hash-table of json response.
+This feature need valid instance token."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/verify_credentials")))
     (mastodon-api-get url (instance-token instance))))
