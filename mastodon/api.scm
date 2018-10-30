@@ -26,7 +26,8 @@
   #:use-module (json)
   #:export (mastodon-api-get
             mtd-accounts-by-id
-            mtd-accounts-verify-credentials))
+            mtd-accounts-verify-credentials
+            mtd-accounts-id-followers))
 
 (define (mastodon-api-get request token)
   "Send http get request to mastodon instance. REQUEST is url of api, and
@@ -60,4 +61,12 @@ hash-table of json response.
 This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/verify_credentials")))
+    (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-accounts-id-followers instance id)
+    "Send request to INSTANCE to get user followers, user corresponding to
+ID. Return the hash-table of json response.
+This feature need valid instance token."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/" id "/followers")))
     (mastodon-api-get url (instance-token instance))))
