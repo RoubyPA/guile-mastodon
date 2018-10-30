@@ -3,9 +3,10 @@
 abs_top_srcdir="`cd "@abs_top_srcdir@" > /dev/null; pwd`"
 abs_top_builddir="`cd "@abs_top_builddir@" > /dev/null; pwd`"
 
+GUILE_AUTO_COMPILE=0
 GUILE_LOAD_COMPILED_PATH="$abs_top_builddir${GUILE_LOAD_COMPILED_PATH:+:}$GUILE_LOAD_COMPILED_PATH"
 GUILE_LOAD_PATH="$abs_top_builddir:$abs_top_srcdir${GUILE_LOAD_PATH:+:}:$GUILE_LOAD_PATH"
-export GUILE_LOAD_COMPILED_PATH GUILE_LOAD_PATH
+export GUILE_AUTO_COMPILE GUILE_LOAD_COMPILED_PATH GUILE_LOAD_PATH
 
 PATH="$abs_top_builddir:$PATH"
 export PATH
