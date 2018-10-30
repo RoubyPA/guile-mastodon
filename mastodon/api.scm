@@ -16,13 +16,16 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 (define-module (mastodon api)
+  #:use-module (mastodon)
+  #:use-module (mastodon instance)
   #:use-module (web client)
   #:use-module (web response)
   #:use-module (ice-9 iconv)
   #:use-module (ice-9 match)
   #:use-module (srfi srfi-11)
   #:use-module (json)
-  #:export (mastodon-api-get))
+  #:export (mastodon-api-get
+            mtd-accounts-by-id))
 
 (define (mastodon-api-get request token)
   "Send http get request to mastodon instance. REQUEST is url of api, and
@@ -42,3 +45,10 @@ error with `mastodon' tag."
       (_
        ;; Error
        (throw 'mastodon `("response-code" . ,(response-code res)))))))
+
+(define (mtd-accounts-by-id instance id)
+  "Send request to INSTANCE to get user information by user ID. Return the
+hash-table of json response."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/" id)))
+    (mastodon-api-get url (instance-token instance))))

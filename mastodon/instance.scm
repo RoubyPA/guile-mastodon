@@ -1,4 +1,4 @@
-;;; mastodon.scm --- Guile module for mastodon.
+;;; instance.scm --- Guile module for mastodon.
 ;;
 ;; Copyright (C) 2018 by Pierre-Antoine Rouby <contact@parouby.fr>
 ;;
@@ -15,10 +15,14 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>
 
-(define-module (mastodon)
+(define-module (mastodon instance)
   #:use-module (srfi srfi-9)
-  #:use-module (mastodon api)
-  #:use-module (mastodon instance)
-  #:export (guile-mastodon-version))
+  #:export (<mastodon-instance>))
 
-(define guile-mastodon-version "0.0.1")
+;;; Define type
+(define-record-type <mastodon-instance>
+  (instance name url token)
+  instance?
+  (name  instance-name)
+  (url   instance-url)
+  (token instance-token))
