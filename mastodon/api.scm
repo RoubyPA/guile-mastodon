@@ -70,3 +70,11 @@ This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/" id "/followers")))
     (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-accounts-id-following instance id)
+    "Send request to INSTANCE to get user following, user corresponding to
+ID. Return the hash-table of json response.
+This feature need valid instance token."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/" id "/following")))
+    (mastodon-api-get url (instance-token instance))))
