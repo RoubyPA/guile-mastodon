@@ -86,3 +86,11 @@ This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/" id "/statuses")))
     (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-accounts-search instance name)
+  "Send request to INSTANCE to search accuonts by username, domain and display
+name, user corresponding to NAME. Return the hash-table of json response.
+This feature need valid instance token."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/search?q=" name)))
+    (mastodon-api-get url (instance-token instance))))
