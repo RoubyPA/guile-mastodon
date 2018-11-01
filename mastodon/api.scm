@@ -27,7 +27,10 @@
   #:export (mastodon-api-get
             mtd-accounts-by-id
             mtd-accounts-verify-credentials
-            mtd-accounts-id-followers))
+            mtd-accounts-id-followers
+            mtd-accounts-id-following
+            mtd-accounts-id-statuses
+            mtd-accounts-search))
 
 (define (mastodon-api-get request token)
   "Send http get request to mastodon instance. REQUEST is url of api, and
