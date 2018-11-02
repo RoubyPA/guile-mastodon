@@ -30,7 +30,8 @@
             mtd-accounts-id-followers
             mtd-accounts-id-following
             mtd-accounts-id-statuses
-            mtd-accounts-search))
+            mtd-accounts-search
+            mtd-instance-info))
 
 (define (mastodon-api-get request token)
   "Send http get request to mastodon instance. REQUEST is url of api, and
@@ -51,6 +52,10 @@ error with `mastodon' tag."
        ;; Error
        (throw 'mastodon `("response-code" . ,(response-code res)))))))
 
+;;;
+;;; Accounts.
+;;;
+
 (define (mtd-accounts-by-id instance id)
   "Send request to INSTANCE to get user information by user ID. Return the
 hash-table of json response."
@@ -67,7 +72,7 @@ This feature need valid instance token."
     (mastodon-api-get url (instance-token instance))))
 
 (define (mtd-accounts-id-followers instance id)
-    "Send request to INSTANCE to get user followers, user corresponding to
+  "Send request to INSTANCE to get user followers, user corresponding to
 ID. Return the hash-table of json response.
 This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
@@ -75,7 +80,7 @@ This feature need valid instance token."
     (mastodon-api-get url (instance-token instance))))
 
 (define (mtd-accounts-id-following instance id)
-    "Send request to INSTANCE to get user following, user corresponding to
+  "Send request to INSTANCE to get user following, user corresponding to
 ID. Return the hash-table of json response.
 This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
@@ -83,7 +88,7 @@ This feature need valid instance token."
     (mastodon-api-get url (instance-token instance))))
 
 (define (mtd-accounts-id-statuses instance id)
-    "Send request to INSTANCE to get user statuses, user corresponding to
+  "Send request to INSTANCE to get user statuses, user corresponding to
 ID. Return the hash-table of json response.
 This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
@@ -96,4 +101,16 @@ name, user corresponding to NAME. Return the hash-table of json response.
 This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/search?q=" name)))
+    (mastodon-api-get url (instance-token instance))))
+
+
+;;;
+;;; Instance.
+;;;
+
+(define (mtd-instance-info instance)
+  "Information about the server. Returns instance
+'https://docs.joinmastodon.org/api/entities/#instance' as hash-table."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/instance")))
     (mastodon-api-get url (instance-token instance))))
