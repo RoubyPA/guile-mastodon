@@ -18,6 +18,7 @@
 (define-module (mastodon api)
   #:use-module (mastodon)
   #:use-module (mastodon instance)
+  #:use-module (web uri)
   #:use-module (web client)
   #:use-module (web response)
   #:use-module (ice-9 iconv)
@@ -25,13 +26,22 @@
   #:use-module (srfi srfi-11)
   #:use-module (json)
   #:export (mastodon-api-get
+            mastodon-api-post
+            ;; Accounts
             mtd-accounts-by-id
             mtd-accounts-verify-credentials
             mtd-accounts-id-followers
             mtd-accounts-id-following
             mtd-accounts-id-statuses
             mtd-accounts-search
-            mtd-instance-info))
+            ;; Instance
+            mtd-instance-info
+            ;; Statuses
+            mtd-new-status))
+
+;;;
+;;; Method.
+;;;
 
 (define (mastodon-api-get request token)
   "Send http get request to mastodon instance. REQUEST is url of api, and
@@ -45,6 +55,25 @@ error with `mastodon' tag."
                           #:headers `((Authorization . ,(string-append "Bearer " token)))
                           #:decode-body? #t
                           #:streaming? #f)))
+    (match (response-code res)
+      (200
+       (json-string->scm (bytevector->string body "utf-8")))
+      (_
+       ;; Error
+       (throw 'mastodon `("response-code" . ,(response-code res)))))))
+
+(define (mastodon-api-post request data token)
+  "Send http get request to mastodon instance. REQUEST is url of api, and
+TOKEN is authentification token. Return hashtable of json response or throw an
+error with `mastodon' tag."
+  (let-values (((res body)
+                (http-post request
+                           #:body (string->bytevector data "utf-8")
+                           #:version '(1 . 1)
+                           #:keep-alive? #f
+                           #:headers `((Authorization . ,(string-append "Bearer " token)))
+                           #:decode-body? #t
+                           #:streaming? #f)))
     (match (response-code res)
       (200
        (json-string->scm (bytevector->string body "utf-8")))
@@ -114,3 +143,15 @@ This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/instance")))
     (mastodon-api-get url (instance-token instance))))
+
+;;;
+;;; Statuses.
+;;;
+
+(define (mtd-new-status instance text)
+  "Post a new status on INSTANCE. TEXT is status text as a string format."
+  (let ((url  (string-append (instance-url instance)
+                             "/api/v1/statuses"))
+        (data (string-append "status=" (uri-encode text))))
+    (mastodon-api-post url data
+                       (instance-token instance))))
