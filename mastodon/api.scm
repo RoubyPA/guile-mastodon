@@ -148,10 +148,15 @@ This feature need valid instance token."
 ;;; Statuses.
 ;;;
 
-(define (mtd-new-status instance text)
-  "Post a new status on INSTANCE. TEXT is status text as a string format."
+(define (mtd-new-status instance args)
+  "Post a new status on INSTANCE. ARGS is list of parameters. You need to
+provide \"status\" or \"media_ids\", for more information see mastodon docs."
   (let ((url  (string-append (instance-url instance)
                              "/api/v1/statuses"))
-        (data (string-append "status=" (uri-encode text))))
+        (data (apply string-append
+                     (map (lambda (l)
+                            (string-append (uri-encode (car  l)) "="
+                                           (uri-encode (cadr l)) "&"))
+                          args))))
     (mastodon-api-post url data
                        (instance-token instance))))
