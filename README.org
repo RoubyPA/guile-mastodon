@@ -39,6 +39,19 @@ guix package -f guix.scm
           "<acces_token>")         ;; Access token
 #+END_SRC
 
+** New status
+
+Post a new status on mastodon instance. See [[https://docs.joinmastodon.org/api/rest/statuses/#post-api-v1-statuses][Mastodon docs]] for more
+information.
+
+#+BEGIN_SRC scheme
+(mtd-new-status
+  my-instance
+  `(("status" ,(string-append "Hello from guile-mastodon version "
+                              guile-mastodon-version "!")
+    ("visibility" "public")))
+#+END_SRC
+
 ** Example
 
 The following example display json of all accout followers.
