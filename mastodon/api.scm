@@ -148,6 +148,12 @@ This feature need valid instance token."
 ;;; Statuses.
 ;;;
 
+(define (mtd-status-by-id instance id)
+  "Get status coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id)))
+    (mastodon-api-get url (instance-token instance))))
+
 (define (mtd-new-status instance args)
   "Post a new status on INSTANCE. ARGS is list of parameters. You need to
 provide \"status\" or \"media_ids\", for more information see mastodon docs."
