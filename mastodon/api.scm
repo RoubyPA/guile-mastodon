@@ -33,6 +33,7 @@
             mtd-accounts-verify-credentials
             mtd-accounts-id-followers
             mtd-accounts-id-follow
+            mtd-accounts-id-unfollow
             mtd-accounts-id-following
             mtd-accounts-id-statuses
             mtd-accounts-search
@@ -147,6 +148,13 @@ This feature need valid instance token."
 This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/" id "/follow")))
+    (mastodon-api-post url "" (instance-token instance))))
+
+(define (mtd-accounts-id-unfollow instance id)
+  "Unfollow an account corresponding to ID.
+This feature need valid instance token."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/" id "/unfollow")))
     (mastodon-api-post url "" (instance-token instance))))
 
 (define (mtd-accounts-id-following instance id)
