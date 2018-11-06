@@ -48,7 +48,9 @@
             mtd-status-id-reblog
             mtd-status-id-unreblog
             mtd-status-id-pin
-            mtd-status-id-unpin))
+            mtd-status-id-unpin
+            ;; Search
+            mtd-search))
 
 ;;;
 ;;; Method.
@@ -163,7 +165,6 @@ This feature need valid instance token."
                             "/api/v1/accounts/search?q=" name)))
     (mastodon-api-get url (instance-token instance))))
 
-
 ;;;
 ;;; Instance.
 ;;;
@@ -251,3 +252,13 @@ provide \"status\" or \"media_ids\", for more information see mastodon docs."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id "/unpin")))
     (mastodon-api-post url "" (instance-token instance))))
+
+;;;
+;;; Search.
+;;;
+
+(define (mtd-search instance query)
+  "Search for content in accounts, statuses and hashtags."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v2/search?q=" query)))
+    (mastodon-api-get url (instance-token instance))))
