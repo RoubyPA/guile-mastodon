@@ -47,7 +47,8 @@
             mtd-new-status
             mtd-status-id-reblog
             mtd-status-id-unreblog
-            mtd-status-id-pin))
+            mtd-status-id-pin
+            mtd-status-id-unpin))
 
 ;;;
 ;;; Method.
@@ -243,4 +244,10 @@ provide \"status\" or \"media_ids\", for more information see mastodon docs."
   "Pin status coresponding to ID."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id "/pin")))
+    (mastodon-api-post url "" (instance-token instance))))
+
+(define (mtd-status-id-unpin instance id)
+  "Unpin status coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id "/unpin")))
     (mastodon-api-post url "" (instance-token instance))))
