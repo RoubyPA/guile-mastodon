@@ -37,6 +37,7 @@
             ;; Instance
             mtd-instance-info
             ;; Statuses
+            mtd-status-context-by-id
             mtd-new-status))
 
 ;;;
@@ -152,6 +153,12 @@ This feature need valid instance token."
   "Get status coresponding to ID."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id)))
+    (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-status-context-by-id instance id)
+  "Get status context coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id "/context")))
     (mastodon-api-get url (instance-token instance))))
 
 (define (mtd-new-status instance args)
