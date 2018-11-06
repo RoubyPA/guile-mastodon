@@ -37,6 +37,7 @@
             ;; Instance
             mtd-instance-info
             ;; Statuses
+            mtd-status-by-id
             mtd-status-context-by-id
             mtd-new-status))
 
