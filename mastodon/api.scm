@@ -44,7 +44,8 @@
             mtd-status-id-reblogged-by
             mtd-status-id-favourited-by
             mtd-delete-status-by-id
-            mtd-new-status))
+            mtd-new-status
+            mtd-status-id-reblog))
 
 ;;;
 ;;; Method.
@@ -223,3 +224,9 @@ provide \"status\" or \"media_ids\", for more information see mastodon docs."
                           args))))
     (mastodon-api-post url data
                        (instance-token instance))))
+
+(define (mtd-status-id-reblog instance id)
+  "Reblog status coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id "/reblog")))
+    (mastodon-api-post url "" (instance-token instance))))
