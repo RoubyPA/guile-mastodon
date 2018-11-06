@@ -40,6 +40,7 @@
             mtd-status-by-id
             mtd-status-context-by-id
             mtd-status-card-by-id
+            mtd-status-id-reblogged-by
             mtd-new-status))
 
 ;;;
@@ -167,6 +168,12 @@ This feature need valid instance token."
   "Get status card coresponding to ID."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id "/card")))
+    (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-status-id-reblogged-by instance id)
+  "Get list of reblogged status coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id "/reblogged_by")))
     (mastodon-api-get url (instance-token instance))))
 
 (define (mtd-new-status instance args)
