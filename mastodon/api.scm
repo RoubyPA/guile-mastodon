@@ -46,7 +46,8 @@
             mtd-delete-status-by-id
             mtd-new-status
             mtd-status-id-reblog
-            mtd-status-id-unreblog))
+            mtd-status-id-unreblog
+            mtd-status-id-pin))
 
 ;;;
 ;;; Method.
@@ -236,4 +237,10 @@ provide \"status\" or \"media_ids\", for more information see mastodon docs."
   "Unreblog status coresponding to ID."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id "/unreblog")))
+    (mastodon-api-post url "" (instance-token instance))))
+
+(define (mtd-status-id-pin instance id)
+  "Pin status coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id "/pin")))
     (mastodon-api-post url "" (instance-token instance))))
