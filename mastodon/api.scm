@@ -27,6 +27,7 @@
   #:use-module (json)
   #:export (mastodon-api-get
             mastodon-api-post
+            mastodon-api-delete
             ;; Accounts
             mtd-accounts-by-id
             mtd-accounts-verify-credentials
@@ -42,6 +43,7 @@
             mtd-status-card-by-id
             mtd-status-id-reblogged-by
             mtd-status-id-favourited-by
+            mtd-delete-status-by-id
             mtd-new-status))
 
 ;;;
@@ -202,6 +204,12 @@ This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id "/favourited_by")))
     (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-delete-status-by-id instance id)
+  "Delete status coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id)))
+    (mastodon-api-delete url (instance-token instance))))
 
 (define (mtd-new-status instance args)
   "Post a new status on INSTANCE. ARGS is list of parameters. You need to
