@@ -86,6 +86,26 @@ error with `mastodon' tag."
        ;; Error
        (throw 'mastodon `("response-code" . ,(response-code res)))))))
 
+(define (mastodon-api-delete request token)
+  "Send http delete request to mastodon instance. REQUEST is url of api, and
+TOKEN is authentification token. Return hashtable of json response or throw an
+error with `mastodon' tag."
+  (let-values (((res body)
+                (http-delete request
+                             #:body #f
+                             #:version '(1 . 1)
+                             #:keep-alive? #f
+                             #:headers `((Authorization
+                                          . ,(string-append "Bearer " token)))
+                             #:decode-body? #t
+                             #:streaming? #f)))
+    (match (response-code res)
+      (200
+       (json-string->scm (bytevector->string body "utf-8")))
+      (_
+       ;; Error
+       (throw 'mastodon `("response-code" . ,(response-code res)))))))
+
 ;;;
 ;;; Accounts.
 ;;;
