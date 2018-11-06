@@ -39,6 +39,7 @@
             ;; Statuses
             mtd-status-by-id
             mtd-status-context-by-id
+            mtd-status-card-by-id
             mtd-new-status))
 
 ;;;
@@ -160,6 +161,12 @@ This feature need valid instance token."
   "Get status context coresponding to ID."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/statuses/" id "/context")))
+    (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-status-card-by-id instance id)
+  "Get status card coresponding to ID."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/statuses/" id "/card")))
     (mastodon-api-get url (instance-token instance))))
 
 (define (mtd-new-status instance args)
