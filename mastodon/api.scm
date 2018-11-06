@@ -32,6 +32,7 @@
             mtd-accounts-by-id
             mtd-accounts-verify-credentials
             mtd-accounts-id-followers
+            mtd-accounts-id-follow
             mtd-accounts-id-following
             mtd-accounts-id-statuses
             mtd-accounts-search
@@ -140,6 +141,13 @@ This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v1/accounts/" id "/followers")))
     (mastodon-api-get url (instance-token instance))))
+
+(define (mtd-accounts-id-follow instance id)
+  "Follow an account corresponding to ID.
+This feature need valid instance token."
+  (let ((url (string-append (instance-url instance)
+                            "/api/v1/accounts/" id "/follow")))
+    (mastodon-api-post url "" (instance-token instance))))
 
 (define (mtd-accounts-id-following instance id)
   "Send request to INSTANCE to get user following, user corresponding to
