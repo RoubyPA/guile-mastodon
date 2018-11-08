@@ -1,4 +1,4 @@
-;;; instance.scm --- Guile module for mastodon.
+;;; types.scm --- Guile module for mastodon.
 ;;
 ;; Copyright (C) 2018 by Pierre-Antoine Rouby <contact@parouby.fr>
 ;;
@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>
 
-(define-module (mastodon instance)
+(define-module (mastodon types)
   #:use-module (srfi srfi-9)
   #:export (<mastodon-instance>
             instance

@@ -18,7 +18,7 @@
 (define-module (mastodon)
   #:use-module (srfi srfi-9)
   #:use-module (mastodon api)
-  #:use-module (mastodon instance)
+  #:use-module (mastodon types)
   #:export (guile-mastodon-version))
 
 (define guile-mastodon-version "0.0.1")

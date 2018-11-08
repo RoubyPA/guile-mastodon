@@ -17,7 +17,7 @@
 
 (define-module (mastodon api)
   #:use-module (mastodon)
-  #:use-module (mastodon instance)
+  #:use-module (mastodon types)
   #:use-module (web uri)
   #:use-module (web client)
   #:use-module (web response)
