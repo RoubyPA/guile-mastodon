@@ -45,7 +45,13 @@
             account-emojis
             account-moved
             account-fields
-            account-bot))
+            account-bot
+
+            <mastodon-field>
+            field?
+            field-name
+            field-value
+            field-verified-at))
 
 ;;;
 ;;; Define types
@@ -88,3 +94,11 @@
   (moved           account-moved)            ;Account
   (fields          account-fields)           ;List of Hash
   (bot             account-bot))             ;Boolean
+
+;;; Field
+(define-record-type <mastodon-field>
+  (field name value verified-at)
+  field?
+  (name        field-name)              ;String
+  (value       field-value)             ;String (HTML)
+  (verified-at field-verified-at))      ;String (Datetime)
