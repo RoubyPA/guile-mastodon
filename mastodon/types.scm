@@ -59,7 +59,12 @@
             source-sensitive
             source-language
             source-note
-            source-fields))
+            source-fields
+
+            <mastodon-application>
+            application?
+            application-name
+            application-website))
 
 ;;;
 ;;; Define types
@@ -120,3 +125,10 @@
   (language  source-language)           ;String (ISO6391)
   (note      source-note)               ;String
   (fields    source-fields))            ;List of Hash
+
+;;; Application
+(define-record-type <mastodon-application>
+  (application name website)
+  application?
+  (name    application-name)            ;String
+  (website application-website))        ;String (URL)
