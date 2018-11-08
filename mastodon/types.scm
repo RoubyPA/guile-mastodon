@@ -74,7 +74,13 @@
             attachment-preview-url
             attachment-text-url
             attachment-meta
-            attachment-description))
+            attachment-description
+
+            <mastodon-emoji>
+            emoji-shortcode
+            emoji-static-url
+            emoji-url
+            emoji-visible-in-picker))
 
 ;;;
 ;;; Define types
@@ -156,3 +162,12 @@
   (text-url     attachment-text-url)     ;String (URL)
   (meta         attachment-meta)         ;Hash
   (description  attachment-description)) ;String
+
+;;; Emoji
+(define-record-type <mastodon-emoji>
+  (emoji shortcode static-url url visible-in-picker)
+  emoji?
+  (shortcode         emoji-shortcode)          ;String
+  (static-url        emoji-static-url)         ;String (URL)
+  (url               emoji-url)                ;String (URL)
+  (visible-in-picker emoji-visible-in-picker)) ;Boolean
