@@ -51,7 +51,15 @@
             field?
             field-name
             field-value
-            field-verified-at))
+            field-verified-at
+
+            <mastodon-source>
+            source?
+            source-privacy
+            source-sensitive
+            source-language
+            source-note
+            source-fields))
 
 ;;;
 ;;; Define types
@@ -102,3 +110,13 @@
   (name        field-name)              ;String
   (value       field-value)             ;String (HTML)
   (verified-at field-verified-at))      ;String (Datetime)
+
+;;; Source
+(define-record-type <mastodon-source>
+  (source privacy sensitive language note fields)
+  source?
+  (privacy   source-privacy)            ;String
+  (sensitive source-sensitive)          ;Boolean
+  (language  source-language)           ;String (ISO6391)
+  (note      source-note)               ;String
+  (fields    source-fields))            ;List of Hash
