@@ -64,7 +64,17 @@
             <mastodon-application>
             application?
             application-name
-            application-website))
+            application-website
+
+            <mastodon-attachment>
+            attachment-id
+            attachment-type
+            attachment-url
+            attachment-remote-url
+            attachment-preview-url
+            attachment-text-url
+            attachment-meta
+            attachment-description))
 
 ;;;
 ;;; Define types
@@ -132,3 +142,17 @@
   application?
   (name    application-name)            ;String
   (website application-website))        ;String (URL)
+
+;;; Attachment
+(define-record-type <mastodon-attachment>
+  (attachment id type url remote-url preview-url
+              text-url meta description)
+  attachment?
+  (id           attachment-id)           ;String
+  (type         attachment-type)         ;String (Enum)
+  (url          attachment-url)          ;String (URL)
+  (remote-url   attachment-remote-url)   ;String (URL)
+  (preview-url  attachment-preview-url)  ;String (URL)
+  (text-url     attachment-text-url)     ;String (URL)
+  (meta         attachment-meta)         ;Hash
+  (description  attachment-description)) ;String
