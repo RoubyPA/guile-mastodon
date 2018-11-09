@@ -29,44 +29,24 @@ guix package -f guix.scm
 ** Create new instance record
 
 #+BEGIN_SRC scheme
-(use-modules (mastodon)
-             (mastodon api)
-             (mastodon instance)
+  (use-modules (mastodon types)
 
-;; Create new instance without token
-(instance "Framapiaf"              ;; Instance name
-          "https://framapiaf.org"  ;; Instance url
-          "<acces_token>")         ;; Access token
+  ;; Create new instance with token
+  (instance "Framapiaf"              ;; Instance name
+            "https://framapiaf.org"  ;; Instance url
+            "<acces_token>")         ;; Access token
 #+END_SRC
 
 ** New status
 
-Post a new status on mastodon instance. See [[https://docs.joinmastodon.org/api/rest/statuses/#post-api-v1-statuses][Mastodon docs]] for more
-information.
+Post a new status on mastodon instance.
 
 #+BEGIN_SRC scheme
-(mtd-new-status
-  my-instance
-  `(("status" ,(string-append "Hello from guile-mastodon version "
-                              guile-mastodon-version "!")
-    ("visibility" "public")))
-#+END_SRC
+  (use-modules (mastodon))
 
-** Example
-
-The following example display json of all accout followers.
-
-#+BEGIN_SRC scheme
-(use-modules (json)
-             (mastodon)
-             (mastodon api)
-             (mastodon instance))
-
-(let* ((inst (instance "Framapiaf" "https://framapiaf.org"
-                       "<token>"))
-       (my-accounts (mtd-accounts-verify-credentials inst))
-       (id          (hash-ref my-accounts "id"))
-       (followers   (mtd-accounts-id-followers inst id)))
-  (display (scm->json-string followers))
-  (newline))
+  (let ((my-inst (instance "Framapiaf"
+                           "https://framapiaf.org"
+                           "<acces_token>")))
+    (new-status my-inst
+                #:status "Hello from guile-mastodon !"))
 #+END_SRC
