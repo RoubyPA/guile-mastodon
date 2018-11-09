@@ -80,7 +80,10 @@
             emoji-shortcode
             emoji-static-url
             emoji-url
-            emoji-visible-in-picker))
+            emoji-visible-in-picker
+
+            ;; Parser
+            hashtab->account))
 
 ;;;
 ;;; Define types
@@ -171,3 +174,29 @@
   (static-url        emoji-static-url)         ;String (URL)
   (url               emoji-url)                ;String (URL)
   (visible-in-picker emoji-visible-in-picker)) ;Boolean
+
+;;;
+;;; Parser
+;;;
+
+(define (hashtab->account ht)
+  "Return account record type from json hash-tab."
+  (account (hash-ref ht "id")
+           (hash-ref ht "username")
+           (hash-ref ht "acct")
+           (hash-ref ht "display_name")
+           (hash-ref ht "locked")
+           (hash-ref ht "created_at")
+           (hash-ref ht "followers_counts")
+           (hash-ref ht "following_counts")
+           (hash-ref ht "statuses_counts")
+           (hash-ref ht "note")
+           (hash-ref ht "url")
+           (hash-ref ht "avatar")
+           (hash-ref ht "avatar_static")
+           (hash-ref ht "header")
+           (hash-ref ht "header_static")
+           (hash-ref ht "emojis")
+           (hash-ref ht "moved")
+           (hash-ref ht "fields")
+           (hash-ref ht "bot")))
