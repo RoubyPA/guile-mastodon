@@ -48,7 +48,9 @@ This function need valid token."
                      (sensitive      #f)
                      (spoiler-text   "")
                      (visibility     "public")
-                     (language       ""))
+                     (language       "")
+                     (auto-pinned    #f)
+                     (auto-reblog    #f))
   "Post new status on INST.
 
 This function need valid token."
@@ -65,7 +67,12 @@ This function need valid token."
                          `("language" ,language))
                      ;; TODO test visibility is correct
                      `(("visibility" ,visibility)))))
-    (hashtab->status (mtd-new-status inst
-                                     (remove (λ (a)
-                                               (not (list? a)))
-                                             args)))))
+    (let* ((new (hashtab->status (mtd-new-status inst
+                                                 (remove (λ (a)
+                                                           (not (list? a)))
+                                                         args))))
+           (id (status-id new)))
+      (when auto-pinned (mtd-status-id-pin inst id))
+      (when auto-reblog (mtd-status-id-reblog inst id))
+      ;; Return status
+      new)))
