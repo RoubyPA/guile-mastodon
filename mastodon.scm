@@ -19,6 +19,17 @@
   #:use-module (srfi srfi-9)
   #:use-module (mastodon api)
   #:use-module (mastodon types)
-  #:export (guile-mastodon-version))
+  #:export (guile-mastodon-version
+            get-current-account))
 
 (define guile-mastodon-version "0.0.1")
+
+(define (get-current-account inst)
+  "Return current account of INST.
+
+This function need valid token."
+  (if (not (string= "" (instance-token inst)))
+      (let ((my-account (mtd-accounts-verify-credentials inst)))
+        (hashtab->account my-account))
+      (throw 'mastodon                  ;
+             `("error" . "Invalid token"))))
