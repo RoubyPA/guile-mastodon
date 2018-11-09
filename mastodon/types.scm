@@ -108,25 +108,25 @@
            fields         bot)
   account?
   ;; source: https://docs.joinmastodon.org/api/entities/#account
-  (id              account-id)               ;String
-  (username        account-username)         ;String
-  (acct            account-acct)             ;String
-  (display-name    account-display-name)     ;String
-  (locked          account-locked)           ;Boolean
-  (created-at      account-created-at)       ;String (Datetime)
-  (followers-count account-followers-counts) ;Number
-  (following-count account-following-counts) ;Number
-  (statuses-count  account-statuses-counts)  ;Number
-  (note            account-note)             ;String
-  (url             account-url)              ;String (URL)
-  (avatar          account-avatar)           ;String (URL)
-  (avatar-static   account-avatar-static)    ;String (URL)
-  (header          account-header)           ;String (URL)
-  (header-static   account-header-static)    ;String (URL)
-  (emojis          account-emojis)           ;List of Emoji
-  (moved           account-moved)            ;Account
-  (fields          account-fields)           ;List of Hash
-  (bot             account-bot))             ;Boolean
+  (id              account-id)              ;String
+  (username        account-username)        ;String
+  (acct            account-acct)            ;String
+  (display-name    account-display-name)    ;String
+  (locked          account-locked)          ;Boolean
+  (created-at      account-created-at)      ;String (Datetime)
+  (followers-count account-followers-count) ;Number
+  (following-count account-following-count) ;Number
+  (statuses-count  account-statuses-count)  ;Number
+  (note            account-note)            ;String
+  (url             account-url)             ;String (URL)
+  (avatar          account-avatar)          ;String (URL)
+  (avatar-static   account-avatar-static)   ;String (URL)
+  (header          account-header)          ;String (URL)
+  (header-static   account-header-static)   ;String (URL)
+  (emojis          account-emojis)          ;List of Emoji
+  (moved           account-moved)           ;Account
+  (fields          account-fields)          ;List of Hash
+  (bot             account-bot))            ;Boolean
 
 ;;; Field
 (define-record-type <mastodon-field>
@@ -188,9 +188,9 @@
            (hash-ref ht "display_name")
            (hash-ref ht "locked")
            (hash-ref ht "created_at")
-           (hash-ref ht "followers_counts")
-           (hash-ref ht "following_counts")
-           (hash-ref ht "statuses_counts")
+           (hash-ref ht "followers_count")
+           (hash-ref ht "following_count")
+           (hash-ref ht "statuses_count")
            (hash-ref ht "note")
            (hash-ref ht "url")
            (hash-ref ht "avatar")
