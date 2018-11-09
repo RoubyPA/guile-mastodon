@@ -82,9 +82,38 @@
             emoji-url
             emoji-visible-in-picker
 
+            <mastodon-status>
+            status-id
+            status-uri
+            status-url
+            status-account
+            status-in-reply-to-id
+            status-in-reply-to-account-id
+            status-reblog
+            status-content
+            status-created-at
+            status-emojis
+            status-replies-count
+            status-reblogs-count
+            status-favourites-count
+            status-reblogged
+            status-favourited
+            status-muted
+            status-sensitive
+            status-spoiler-text
+            status-visibility
+            status-media-attachments
+            status-mentions
+            status-tags
+            status-card
+            status-application
+            status-language
+            status-pinned
+
             ;; Parser
             hashtab->account
-            hashtab->field))
+            hashtab->field
+            hashtab->status))
 
 ;;;
 ;;; Define types
@@ -176,6 +205,45 @@
   (url               emoji-url)                ;String (URL)
   (visible-in-picker emoji-visible-in-picker)) ;Boolean
 
+;;; Status
+(define-record-type <mastodon-status>
+  (status id               uri               url
+          account          in-reply-to-id    in-reply-to-account-id
+          reblog           content           created-at
+          emojis           replies-count     reblogs-count
+          favourites-count reblogged         favourited
+          muted            sensitive         spoiler-text
+          visibility       media-attachments mentions
+          tags             card              application
+          language         pinned)
+  status?
+  (id                     status-id)                     ;String
+  (uri                    status-uri)                    ;String
+  (url                    status-url)                    ;String (URL)
+  (account                status-account)                ;Account
+  (in-reply-to-id         status-in-reply-to-id)         ;String
+  (in-reply-to-account-id status-in-reply-to-account-id) ;String
+  (reblog                 status-reblog)                 ;Status
+  (content                status-content)                ;String (HTML)
+  (created-at             status-created-at)             ;String (Datetime)
+  (emojis                 status-emojis)                 ;List of Emoji
+  (replies-count          status-replies-count)          ;Number
+  (reblogs-count          status-reblogs-count)          ;Number
+  (favourites-count       status-favourites-count)       ;Number
+  (reblogged              status-reblogged)              ;Boolean
+  (favourited             status-favourited)             ;Boolean
+  (muted                  status-muted)                  ;Boolean
+  (sensitive              status-sensitive)              ;Boolean
+  (spoiler-text           status-spoiler-text)           ;String
+  (visibility             status-visibility)             ;String (Enum)
+  (media-attachments      status-media-attachments)      ;List of Attachment
+  (mentions               status-mentions)               ;List of Mention
+  (tags                   status-tags)                   ;List of Tag
+  (card                   status-card)                   ;Card
+  (application            status-application)            ;Application
+  (language               status-language)               ;String (ISO6391)
+  (pinned                 status-pinned)) 	         ;Boolean
+
 ;;;
 ;;; Parser
 ;;;
@@ -207,3 +275,32 @@
   (field (hash-ref ht "name")
          (hash-ref ht "value")
          (hash-ref ht "verified-at")))
+
+(define (hashtab->status ht)
+  "Return status record type from json hash-tab HT."
+  (status (hash-ref ht "id")
+          (hash-ref ht "uri")
+          (hash-ref ht "url")
+          (hash-ref ht "account")
+          (hash-ref ht "in_reply_to_id")
+          (hash-ref ht "in_reply_to_account_id")
+          (hash-ref ht "reblog")
+          (hash-ref ht "content")
+          (hash-ref ht "created_at")
+          (hash-ref ht "emojis")
+          (hash-ref ht "replies_count")
+          (hash-ref ht "reblogs_count")
+          (hash-ref ht "favourites_count")
+          (hash-ref ht "reblogged")
+          (hash-ref ht "favourited")
+          (hash-ref ht "muted")
+          (hash-ref ht "sensitive")
+          (hash-ref ht "spoiler_text")
+          (hash-ref ht "visibility")
+          (hash-ref ht "media_attachments")
+          (hash-ref ht "mentions")
+          (hash-ref ht "tags")
+          (hash-ref ht "card")
+          (hash-ref ht "application")
+          (hash-ref ht "language")
+          (hash-ref ht "pinned")))
