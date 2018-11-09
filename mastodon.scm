@@ -20,7 +20,8 @@
   #:use-module (mastodon api)
   #:use-module (mastodon types)
   #:export (guile-mastodon-version
-            get-current-account))
+            get-current-account
+            get-account-by-id))
 
 (define guile-mastodon-version "0.0.1")
 
@@ -33,3 +34,7 @@ This function need valid token."
         (hashtab->account my-account))
       (throw 'mastodon                  ;
              `("error" . "Invalid token"))))
+
+(define (get-account-by-id inst id)
+  "Return account by ID on INST."
+  (hashtab->account (mtd-accounts-by-id inst id)))
