@@ -83,7 +83,8 @@
             emoji-visible-in-picker
 
             ;; Parser
-            hashtab->account))
+            hashtab->account
+            hashtab->field))
 
 ;;;
 ;;; Define types
@@ -180,7 +181,7 @@
 ;;;
 
 (define (hashtab->account ht)
-  "Return account record type from json hash-tab."
+  "Return account record type from json hash-tab HT."
   (account (hash-ref ht "id")
            (hash-ref ht "username")
            (hash-ref ht "acct")
@@ -200,3 +201,9 @@
            (hash-ref ht "moved")
            (hash-ref ht "fields")
            (hash-ref ht "bot")))
+
+(define (hashtab->field ht)
+  "Return field record type from json hash-tab HT."
+  (field (hash-ref ht "name")
+         (hash-ref ht "value")
+         (hash-ref ht "verified-at")))
