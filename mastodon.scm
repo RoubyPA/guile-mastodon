@@ -16,12 +16,14 @@
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 (define-module (mastodon)
+  #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-9)
   #:use-module (mastodon api)
   #:use-module (mastodon types)
   #:export (guile-mastodon-version
             get-current-account
-            get-account-by-id))
+            get-account-by-id
+            new-status))
 
 (define guile-mastodon-version "0.0.1")
 
@@ -38,3 +40,32 @@ This function need valid token."
 (define (get-account-by-id inst id)
   "Return account by ID on INST."
   (hashtab->account (mtd-accounts-by-id inst id)))
+
+(define* (new-status inst #:optional #:key
+                     (status         "")
+                     (in-reply-to-id "")
+                     (media-ids      '())
+                     (sensitive      #f)
+                     (spoiler-text   "")
+                     (visibility     "public")
+                     (language       ""))
+  "Post new status on INST.
+
+This function need valid token."
+  ;; TODO: Add media-ids in args
+  (let ((args (cons* (if (not (string= status ""))
+                         `("status" ,status))
+                     (if (not (string= in-reply-to-id ""))
+                         `("in_reply_to_id" ,in-reply-to-id))
+                     (if sensitive
+                         '("sensitive" "true"))
+                     (if (not (string= spoiler-text ""))
+                         `("spoiler_text" ,spoiler-text))
+                     (if (not (string= language ""))
+                         `("language" ,language))
+                     ;; TODO test visibility is correct
+                     `(("visibility" ,visibility)))))
+    (hashtab->status (mtd-new-status inst
+                                     (remove (λ (a)
+                                               (not (list? a)))
+                                             args)))))
