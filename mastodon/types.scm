@@ -113,7 +113,8 @@
             ;; Parser
             hashtab->account
             hashtab->field
-            hashtab->status))
+            hashtab->status
+            hashtab->attachment))
 
 ;;;
 ;;; Define types
@@ -304,3 +305,14 @@
           (hash-ref ht "application")
           (hash-ref ht "language")
           (hash-ref ht "pinned")))
+
+(define (hashtab->attachment ht)
+  "Return attachment record type from json hash-tab HT."
+  (attachment (hash-ref ht "id")
+              (hash-ref ht "type")
+              (hash-ref ht "url")
+              (hash-ref ht "remote_url")
+              (hash-ref ht "preview_url")
+              (hash-ref ht "text_url")
+              (hash-ref ht "meta")
+              (hash-ref ht "description")))
