@@ -355,7 +355,7 @@ This feature need valid instance token."
                 "filename=\"" file-name "\"\r\n"
                 "Content-Type: " file-type "\r\n\r\n"))
               file-u8
-              (string->u8-list "--AaB03x--"))))
+              (string->u8-list "\r\n--AaB03x--\r\n"))))
 
   (let* ((url (string-append (instance-url instance)
                              "/api/v1/media"))
@@ -366,4 +366,6 @@ This feature need valid instance token."
     (close file-port)
     (mastodon-api-post url (u8-list->bytevector data)
                        (instance-token instance)
-                       #:content-type "multipart/form-data; boundary=AaB03x")))
+                       #:content-type
+                       (string-append "multipart/form-data; "
+                                      "boundary=AaB03x"))))
