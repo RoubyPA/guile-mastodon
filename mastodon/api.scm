@@ -23,6 +23,8 @@
   #:use-module (web response)
   #:use-module (ice-9 iconv)
   #:use-module (ice-9 match)
+  #:use-module (ice-9 binary-ports)
+  #:use-module (rnrs bytevectors)
   #:use-module (srfi srfi-11)
   #:use-module (json)
   #:export (mastodon-api-get
@@ -52,7 +54,9 @@
             mtd-status-id-pin
             mtd-status-id-unpin
             ;; Search
-            mtd-search))
+            mtd-search
+            ;; Media
+            mtd-post-media))
 
 ;;;
 ;;; Method.
@@ -75,18 +79,29 @@ error with `mastodon' tag."
        (json-string->scm (bytevector->string body "utf-8")))
       (_
        ;; Error
-       (throw 'mastodon `("response-code" . ,(response-code res)))))))
+       (throw 'mastodon `(("response-code" . ,(response-code res))
+                          ("response-phrase" .
+                           ,(response-reason-phrase res))
+                          ("response" .
+                           ,(if (bytevector? body)
+                                (bytevector->string body "utf-8")
+                                body))))))))
 
-(define (mastodon-api-post request data token)
+(define* (mastodon-api-post request data token #:key
+                            (content-type "application/x-www-form-urlencoded"))
   "Send http post request to mastodon instance. REQUEST is url of api, and
 TOKEN is authentification token. Return hashtable of json response or throw an
 error with `mastodon' tag."
   (let-values (((res body)
                 (http-post request
-                           #:body (string->bytevector data "utf-8")
+                           #:body (if (bytevector? data)
+                                      data
+                                      (string->bytevector data "utf-8"))
                            #:version '(1 . 1)
                            #:keep-alive? #f
-                           #:headers `((Authorization . ,(string-append "Bearer " token)))
+                           #:headers `((Authorization
+                                        . ,(string-append "Bearer " token))
+                                       (Content-Type . ,content-type))
                            #:decode-body? #t
                            #:streaming? #f)))
     (match (response-code res)
@@ -94,7 +109,13 @@ error with `mastodon' tag."
        (json-string->scm (bytevector->string body "utf-8")))
       (_
        ;; Error
-       (throw 'mastodon `("response-code" . ,(response-code res)))))))
+       (throw 'mastodon `(("response-code" . ,(response-code res))
+                          ("response-phrase" .
+                           ,(response-reason-phrase res))
+                          ("response" .
+                           ,(if (bytevector? body)
+                                (bytevector->string body "utf-8")
+                                body))))))))
 
 (define (mastodon-api-delete request token)
   "Send http delete request to mastodon instance. REQUEST is url of api, and
@@ -114,7 +135,13 @@ error with `mastodon' tag."
        (json-string->scm (bytevector->string body "utf-8")))
       (_
        ;; Error
-       (throw 'mastodon `("response-code" . ,(response-code res)))))))
+       (throw 'mastodon `(("response-code" . ,(response-code res))
+                          ("response-phrase" .
+                           ,(response-reason-phrase res))
+                          ("response" .
+                           ,(if (bytevector? body)
+                                (bytevector->string body "utf-8")
+                                body))))))))
 
 ;;;
 ;;; Accounts.
@@ -296,3 +323,49 @@ This feature need valid instance token."
   (let ((url (string-append (instance-url instance)
                             "/api/v2/search?q=" query)))
     (mastodon-api-get url (instance-token instance))))
+
+;;;
+;;; Media.
+;;;
+
+(define (mtd-post-media instance filepath description)
+  "Post new media from FILEPATH."
+  (define mime-type
+    '(("jpeg" . "image/jpeg")
+      ("jpg"  . "image/jpeg")
+      ("png"  . "image/png")
+      ("gif"  . "image/gif")))
+
+  (define file-name
+    (car (last-pair (split-and-decode-uri-path filepath))))
+
+  (define file-type
+    (let* ((extention (car (last-pair (string-split file-name #\.))))
+           (type (assoc-ref mime-type extention)))
+      (if (string? type)
+          type
+          (throw 'mastodon '(("error" . "Unknown mime-type"))))))
+
+  (define (form-data-encode file-u8)
+    (let* ((string->u8-list (λ (str)
+                              (bytevector->u8-list
+                               (string->bytevector str "utf-8")))))
+      (append (string->u8-list "--AaB03x\r\n")
+              (string->u8-list
+               (string-append
+                "Content-Disposition: form-data; name=\"file\";"
+                "filename=\"" file-name "\"\r\n"
+                "Content-Type: " file-type "\r\n\r\n"))
+              file-u8
+              (string->u8-list "--AaB03x--"))))
+
+  (let* ((url (string-append (instance-url instance)
+                             "/api/v1/media"))
+         (file-port (open-file filepath "rb"))
+         (file-u8   (bytevector->u8-list
+                     (get-bytevector-all file-port)))
+         (data      (form-data-encode file-u8)))
+    (close file-port)
+    (mastodon-api-post url (u8-list->bytevector data)
+                       (instance-token instance)
+                       #:content-type "multipart/form-data; boundary=AaB03x")))
