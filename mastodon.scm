@@ -54,23 +54,28 @@ This function need valid token."
   "Post new status on INST.
 
 This function need valid token."
-  ;; TODO: Add media-ids in args
   (let ((args (cons* (if (not (string= status ""))
-                         `("status" ,status))
+                         `("status" . ,status)
+                         #f)
                      (if (not (string= in-reply-to-id ""))
-                         `("in_reply_to_id" ,in-reply-to-id))
+                         `("in_reply_to_id" . ,in-reply-to-id)
+                         #f)
                      (if sensitive
-                         '("sensitive" "true"))
+                         '("sensitive" . "true")
+                         #f)
                      (if (not (string= spoiler-text ""))
-                         `("spoiler_text" ,spoiler-text))
+                         `("spoiler_text" . ,spoiler-text)
+                         #f)
                      (if (not (string= language ""))
-                         `("language" ,language))
+                         `("language" . ,language)
+                         #f)
+                     (if (not (equal? media-ids '()))
+                         `("media_ids" . ,media-ids)
+                         #f)
                      ;; TODO test visibility is correct
-                     `(("visibility" ,visibility)))))
-    (let* ((new (hashtab->status (mtd-new-status inst
-                                                 (remove (λ (a)
-                                                           (not (list? a)))
-                                                         args))))
+                     `(("visibility" . ,visibility)))))
+    (let* ((new (hashtab->status
+                 (mtd-new-status inst (remove not args))))
            (id (status-id new)))
       (when auto-pinned (mtd-status-id-pin inst id))
       (when auto-reblog (mtd-status-id-reblog inst id))

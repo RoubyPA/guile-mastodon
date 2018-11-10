@@ -71,7 +71,8 @@ error with `mastodon' tag."
                           #:body #f
                           #:version '(1 . 1)
                           #:keep-alive? #f
-                          #:headers `((Authorization . ,(string-append "Bearer " token)))
+                          #:headers `((Authorization
+                                       . ,(string-append "Bearer " token)))
                           #:decode-body? #t
                           #:streaming? #f)))
     (match (response-code res)
@@ -272,13 +273,10 @@ ARGS is list of parameters. You need to provide \"status\" and/or
 This feature need valid instance token."
   (let ((url  (string-append (instance-url instance)
                              "/api/v1/statuses"))
-        (data (apply string-append
-                     (map (lambda (l)
-                            (string-append (uri-encode (car  l)) "="
-                                           (uri-encode (cadr l)) "&"))
-                          args))))
+        (data (scm->json-string args)))
     (mastodon-api-post url data
-                       (instance-token instance))))
+                       (instance-token instance)
+                       #:content-type "application/json")))
 
 (define (mtd-status-id-reblog instance id)
   "Reblog status coresponding to ID.
