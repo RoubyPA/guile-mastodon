@@ -249,70 +249,40 @@
 ;;; Parser
 ;;;
 
+(define (hashtab->record ht ctor list)
+  "Return recort type created by CTOR with LIST of argument correspoding to HT
+json hash-table values."
+  (let ((get-ref (λ (s) (hash-ref ht s))))
+    (apply ctor (map get-ref list))))
+
 (define (hashtab->account ht)
   "Return account record type from json hash-tab HT."
-  (account (hash-ref ht "id")
-           (hash-ref ht "username")
-           (hash-ref ht "acct")
-           (hash-ref ht "display_name")
-           (hash-ref ht "locked")
-           (hash-ref ht "created_at")
-           (hash-ref ht "followers_count")
-           (hash-ref ht "following_count")
-           (hash-ref ht "statuses_count")
-           (hash-ref ht "note")
-           (hash-ref ht "url")
-           (hash-ref ht "avatar")
-           (hash-ref ht "avatar_static")
-           (hash-ref ht "header")
-           (hash-ref ht "header_static")
-           (hash-ref ht "emojis")
-           (hash-ref ht "moved")
-           (hash-ref ht "fields")
-           (hash-ref ht "bot")))
+  (let ((refs (list "id" "username" "acct" "display_name" "locked"
+                    "created_at" "followers_count" "following_count"
+                    "statuses_count" "note" "url" "avatar"
+                    "avatar_static" "header" "header_static" "emojis"
+                    "moved" "fields" "bot")))
+    (hashtab->record ht account refs)))
 
 (define (hashtab->field ht)
   "Return field record type from json hash-tab HT."
-  (field (hash-ref ht "name")
-         (hash-ref ht "value")
-         (hash-ref ht "verified-at")))
+  (let ((refs (list "name" "value" "verified-at")))
+    (hashtab->record ht field refs)))
 
 (define (hashtab->status ht)
   "Return status record type from json hash-tab HT."
-  (status (hash-ref ht "id")
-          (hash-ref ht "uri")
-          (hash-ref ht "url")
-          (hash-ref ht "account")
-          (hash-ref ht "in_reply_to_id")
-          (hash-ref ht "in_reply_to_account_id")
-          (hash-ref ht "reblog")
-          (hash-ref ht "content")
-          (hash-ref ht "created_at")
-          (hash-ref ht "emojis")
-          (hash-ref ht "replies_count")
-          (hash-ref ht "reblogs_count")
-          (hash-ref ht "favourites_count")
-          (hash-ref ht "reblogged")
-          (hash-ref ht "favourited")
-          (hash-ref ht "muted")
-          (hash-ref ht "sensitive")
-          (hash-ref ht "spoiler_text")
-          (hash-ref ht "visibility")
-          (hash-ref ht "media_attachments")
-          (hash-ref ht "mentions")
-          (hash-ref ht "tags")
-          (hash-ref ht "card")
-          (hash-ref ht "application")
-          (hash-ref ht "language")
-          (hash-ref ht "pinned")))
+  (let ((refs (list "id" "uri" "url" "account" "in_reply_to_id"
+                    "in_reply_to_account_id" "reblog" "content"
+                    "created_at" "emojis" "replies_count"
+                    "reblogs_count" "favourites_count" "reblogged"
+                    "favourited" "muted" "sensitive" "spoiler_text"
+                    "visibility" "media_attachments" "mentions"
+                    "tags" "card" "application" "language" "pinned")))
+    (hashtab->record ht status refs)))
 
 (define (hashtab->attachment ht)
   "Return attachment record type from json hash-tab HT."
-  (attachment (hash-ref ht "id")
-              (hash-ref ht "type")
-              (hash-ref ht "url")
-              (hash-ref ht "remote_url")
-              (hash-ref ht "preview_url")
-              (hash-ref ht "text_url")
-              (hash-ref ht "meta")
-              (hash-ref ht "description")))
+  (let ((refs (list "id" "type" "url" "remote_url"
+                    "preview_url" "text_url" "meta"
+                    "description")))
+    (hashtab->record ht attachment refs)))
