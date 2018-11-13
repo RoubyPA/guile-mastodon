@@ -1,6 +1,7 @@
 ;;; types.scm --- Guile module for mastodon.
 ;;
 ;; Copyright (C) 2018 by Pierre-Antoine Rouby <contact@parouby.fr>
+;; Copyright (C) 2018 by Ludovic Courtès <ludo@gnu.org>
 ;;
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +18,8 @@
 
 (define-module (mastodon types)
   #:use-module (srfi srfi-9)
+  #:use-module (ice-9 match)
+  #:use-module (json)
   #:export (<mastodon-instance>
             instance
             instance?
@@ -111,13 +114,50 @@
             status-pinned
 
             ;; Parser
-            hashtab->account
-            hashtab->field
-            hashtab->status
-            hashtab->attachment))
+            json->account
+            json->field
+            json->source
+            json->application
+            json->attachment
+            json->emoji
+            json->status))
+
+(define-syntax-rule (define-json-reader json->record ctor spec ...)
+  "Define JSON->RECORD as a procedure that converts a JSON representation,
+read from a port, string, or hash table, into a record created by CTOR and
+following SPEC, a series of field specifications."
+  (define (json->record input)
+    (let ((table (cond ((port? input)
+                        (json->scm input))
+                       ((string? input)
+                        (json-string->scm input))
+                       ((hash-table? input)
+                        input))))
+      (let-syntax ((extract-field (syntax-rules ()
+                                    ((_ table (field key json->value))
+                                     (json->value (hash-ref table key)))
+                                    ((_ table (field key))
+                                     (hash-ref table key))
+                                    ((_ table (field))
+                                     (hash-ref table
+                                               (symbol->string 'field))))))
+        (ctor (extract-field table spec) ...)))))
+
+(define-syntax-rule (define-json-mapping rtd ctor pred json->record
+                      (field getter spec ...) ...)
+  "Define RTD as a record type with the given FIELDs and GETTERs, à la SRFI-9,
+and define JSON->RECORD as a conversion from JSON to a record of this type."
+  (begin
+    (define-record-type rtd
+      (ctor field ...)
+      pred
+      (field getter) ...)
+
+    (define-json-reader json->record ctor
+      (field spec ...) ...)))
 
 ;;;
-;;; Define types
+;;; Define record types
 ;;;
 
 ;;; Instance
@@ -128,161 +168,115 @@
   (url   instance-url)
   (token instance-token))
 
-;;; Account
-(define-record-type <mastodon-account>
-  (account id             username acct   display-name locked
-           created-at     followers-count following-count
-           statuses-count note            url
-           avatar         avatar-static   header
-           header-static  emojis          moved
-           fields         bot)
+;;;
+;;; JSON Mapping
+;;;
+
+;;; Account <https://docs.joinmastodon.org/api/entities/#account>
+(define-json-mapping <mastodon-account>
+  make-account
   account?
-  ;; source: https://docs.joinmastodon.org/api/entities/#account
-  (id              account-id)              ;String
-  (username        account-username)        ;String
-  (acct            account-acct)            ;String
-  (display-name    account-display-name)    ;String
-  (locked          account-locked)          ;Boolean
-  (created-at      account-created-at)      ;String (Datetime)
-  (followers-count account-followers-count) ;Number
-  (following-count account-following-count) ;Number
-  (statuses-count  account-statuses-count)  ;Number
-  (note            account-note)            ;String
-  (url             account-url)             ;String (URL)
-  (avatar          account-avatar)          ;String (URL)
-  (avatar-static   account-avatar-static)   ;String (URL)
-  (header          account-header)          ;String (URL)
-  (header-static   account-header-static)   ;String (URL)
-  (emojis          account-emojis)          ;List of Emoji
-  (moved           account-moved)           ;Account
-  (fields          account-fields)          ;List of Hash
-  (bot             account-bot))            ;Boolean
+  json->account
+  (id              account-id)
+  (username        account-username)
+  (acct            account-acct)
+  (display-name    account-display-name)
+  (locked          account-locked)
+  (created-at      account-created-at "created_at")
+  (followers-count account-followers-count "followers_count")
+  (following-count account-following-count "following_count")
+  (statuses-count  account-statuses-count "statuses_count")
+  (note            account-note)
+  (url             account-url)
+  (avatar          account-avatar)
+  (avatar-static   account-avatar-static "avatar_static")
+  (header          account-header)
+  (header-static   account-header-static "header_static")
+  (emojis          account-emojis)
+  (moved           account-moved)
+  (fields          account-fields)
+  (bot             account-bot))
 
-;;; Field
-(define-record-type <mastodon-field>
-  (field name value verified-at)
+;;; Field <https://docs.joinmastodon.org/api/entities/#field>
+(define-json-mapping <mastodon-field>
+  make-field
   field?
-  (name        field-name)              ;String
-  (value       field-value)             ;String (HTML)
-  (verified-at field-verified-at))      ;String (Datetime)
+  json->field
+  (name        field-name)
+  (value       field-value)
+  (verified-at field-verified-at "verified_at"))
 
-;;; Source
-(define-record-type <mastodon-source>
-  (source privacy sensitive language note fields)
+;;; Source <https://docs.joinmastodon.org/api/entities/#source>
+(define-json-mapping <mastodon-source>
+  make-source
   source?
-  (privacy   source-privacy)            ;String
-  (sensitive source-sensitive)          ;Boolean
-  (language  source-language)           ;String (ISO6391)
-  (note      source-note)               ;String
-  (fields    source-fields))            ;List of Hash
+  json->source
+  (privacy   source-privacy)
+  (sensitive source-sensitive)
+  (language  source-language)
+  (note      source-note)
+  (fields    source-fields))
 
-;;; Application
-(define-record-type <mastodon-application>
-  (application name website)
+;;; Application <https://docs.joinmastodon.org/api/entities/#application>
+(define-json-mapping <mastodon-application>
+  make-application
   application?
-  (name    application-name)            ;String
-  (website application-website))        ;String (URL)
+  json->application
+  (name    application-name)
+  (website application-website))
 
-;;; Attachment
-(define-record-type <mastodon-attachment>
-  (attachment id type url remote-url preview-url
-              text-url meta description)
+;;; Attachment <https://docs.joinmastodon.org/api/entities/#attachment>
+(define-json-mapping <mastodon-attachment>
+  make-attachment
   attachment?
-  (id           attachment-id)           ;String
-  (type         attachment-type)         ;String (Enum)
-  (url          attachment-url)          ;String (URL)
-  (remote-url   attachment-remote-url)   ;String (URL)
-  (preview-url  attachment-preview-url)  ;String (URL)
-  (text-url     attachment-text-url)     ;String (URL)
-  (meta         attachment-meta)         ;Hash
-  (description  attachment-description)) ;String
+  json->attachment
+  (id           attachment-id)
+  (type         attachment-type)
+  (url          attachment-url)
+  (remote-url   attachment-remote-url "remote_url")
+  (preview-url  attachment-preview-url "preview_url")
+  (text-url     attachment-text-url "text_url")
+  (meta         attachment-meta)
+  (description  attachment-description))
 
-;;; Emoji
-(define-record-type <mastodon-emoji>
-  (emoji shortcode static-url url visible-in-picker)
+;;; Emoji <https://docs.joinmastodon.org/api/entities/#emoji>
+(define-json-mapping <mastodon-emoji>
+  make-emoji
   emoji?
-  (shortcode         emoji-shortcode)          ;String
-  (static-url        emoji-static-url)         ;String (URL)
-  (url               emoji-url)                ;String (URL)
-  (visible-in-picker emoji-visible-in-picker)) ;Boolean
+  json->emoji
+  (shortcode         emoji-shortcode)
+  (static-url        emoji-static-url "static_url")
+  (url               emoji-url)
+  (visible-in-picker emoji-visible-in-picker "visible_in_picker"))
 
-;;; Status
-(define-record-type <mastodon-status>
-  (status id               uri               url
-          account          in-reply-to-id    in-reply-to-account-id
-          reblog           content           created-at
-          emojis           replies-count     reblogs-count
-          favourites-count reblogged         favourited
-          muted            sensitive         spoiler-text
-          visibility       media-attachments mentions
-          tags             card              application
-          language         pinned)
+;;; Status <https://docs.joinmastodon.org/api/entities/#status>
+(define-json-mapping <mastodon-status>
+  make-status
   status?
-  (id                     status-id)                     ;String
-  (uri                    status-uri)                    ;String
-  (url                    status-url)                    ;String (URL)
-  (account                status-account)                ;Account
-  (in-reply-to-id         status-in-reply-to-id)         ;String
-  (in-reply-to-account-id status-in-reply-to-account-id) ;String
-  (reblog                 status-reblog)                 ;Status
-  (content                status-content)                ;String (HTML)
-  (created-at             status-created-at)             ;String (Datetime)
-  (emojis                 status-emojis)                 ;List of Emoji
-  (replies-count          status-replies-count)          ;Number
-  (reblogs-count          status-reblogs-count)          ;Number
-  (favourites-count       status-favourites-count)       ;Number
-  (reblogged              status-reblogged)              ;Boolean
-  (favourited             status-favourited)             ;Boolean
-  (muted                  status-muted)                  ;Boolean
-  (sensitive              status-sensitive)              ;Boolean
-  (spoiler-text           status-spoiler-text)           ;String
-  (visibility             status-visibility)             ;String (Enum)
-  (media-attachments      status-media-attachments)      ;List of Attachment
-  (mentions               status-mentions)               ;List of Mention
-  (tags                   status-tags)                   ;List of Tag
-  (card                   status-card)                   ;Card
-  (application            status-application)            ;Application
-  (language               status-language)               ;String (ISO6391)
-  (pinned                 status-pinned)) 	         ;Boolean
-
-;;;
-;;; Parser
-;;;
-
-(define (hashtab->record ht ctor list)
-  "Return recort type created by CTOR with LIST of argument correspoding to HT
-json hash-table values."
-  (let ((get-ref (λ (s) (hash-ref ht s))))
-    (apply ctor (map get-ref list))))
-
-(define (hashtab->account ht)
-  "Return account record type from json hash-tab HT."
-  (let ((refs (list "id" "username" "acct" "display_name" "locked"
-                    "created_at" "followers_count" "following_count"
-                    "statuses_count" "note" "url" "avatar"
-                    "avatar_static" "header" "header_static" "emojis"
-                    "moved" "fields" "bot")))
-    (hashtab->record ht account refs)))
-
-(define (hashtab->field ht)
-  "Return field record type from json hash-tab HT."
-  (let ((refs (list "name" "value" "verified-at")))
-    (hashtab->record ht field refs)))
-
-(define (hashtab->status ht)
-  "Return status record type from json hash-tab HT."
-  (let ((refs (list "id" "uri" "url" "account" "in_reply_to_id"
-                    "in_reply_to_account_id" "reblog" "content"
-                    "created_at" "emojis" "replies_count"
-                    "reblogs_count" "favourites_count" "reblogged"
-                    "favourited" "muted" "sensitive" "spoiler_text"
-                    "visibility" "media_attachments" "mentions"
-                    "tags" "card" "application" "language" "pinned")))
-    (hashtab->record ht status refs)))
-
-(define (hashtab->attachment ht)
-  "Return attachment record type from json hash-tab HT."
-  (let ((refs (list "id" "type" "url" "remote_url"
-                    "preview_url" "text_url" "meta"
-                    "description")))
-    (hashtab->record ht attachment refs)))
+  json->status
+  (id                     status-id)
+  (uri                    status-uri)
+  (url                    status-url)
+  (account                status-account)
+  (in-reply-to-id         status-in-reply-to-id "in_reply_to_id")
+  (in-reply-to-account-id status-in-reply-to-account-id "in_reply_to_account_id")
+  (reblog                 status-reblog)
+  (content                status-content)
+  (created-at             status-created-at "created_at")
+  (emojis                 status-emojis)
+  (replies-count          status-replies-count "replies_count")
+  (reblogs-count          status-reblogs-count "reblogs_count")
+  (favourites-count       status-favourites-count "favourites_count")
+  (reblogged              status-reblogged)
+  (favourited             status-favourited)
+  (muted                  status-muted)
+  (sensitive              status-sensitive)
+  (spoiler-text           status-spoiler-text "spoiler_text")
+  (visibility             status-visibility)
+  (media-attachments      status-media-attachments "media_attachments")
+  (mentions               status-mentions)
+  (tags                   status-tags)
+  (card                   status-card)
+  (application            status-application)
+  (language               status-language)
+  (pinned                 status-pinned))

@@ -33,13 +33,13 @@
 This function need valid token."
   (if (not (string= "" (instance-token inst)))
       (let ((my-account (mtd-accounts-verify-credentials inst)))
-        (hashtab->account my-account))
+        (json->account my-account))
       (throw 'mastodon                  ;
              `("error" . "Invalid token"))))
 
 (define (get-account-by-id inst id)
   "Return account by ID on INST."
-  (hashtab->account (mtd-accounts-by-id inst id)))
+  (json->account (mtd-accounts-by-id inst id)))
 
 (define* (new-status inst #:optional #:key
                      (status         "")
@@ -74,7 +74,7 @@ This function need valid token."
                          #f)
                      ;; TODO test visibility is correct
                      `(("visibility" . ,visibility)))))
-    (let* ((new (hashtab->status
+    (let* ((new (json->status
                  (mtd-new-status inst (remove not args))))
            (id (status-id new)))
       (when auto-pinned (mtd-status-id-pin inst id))
