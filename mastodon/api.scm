@@ -149,80 +149,64 @@ error with `mastodon' tag."
 ;;;
 
 (define (mtd-accounts-by-id instance id)
-  "Get account by user ID. Return the hash-table of json response."
-  (let ((url (string-append (instance-url instance)
+  "Get account by user ID. Return account."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id)))
-    (mastodon-api-get url (instance-token instance))))
+    (json->account (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-accounts-verify-credentials instance)
-  "Get current account. Return the hash-table of json response.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  "Get current account. Return account."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/verify_credentials")))
-    (mastodon-api-get url (instance-token instance))))
+    (json->account (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-accounts-id-followers instance id)
-  "Get account followers. Return the hash-table of json response.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  "Get account followers. Return list of accounts."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id "/followers")))
-    (mastodon-api-get url (instance-token instance))))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-accounts-id-follow instance id)
-  "Follow an account corresponding to ID.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  "Follow an account corresponding to ID. Return relationship."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id "/follow")))
-    (mastodon-api-post url "" (instance-token instance))))
+    (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
 
 (define (mtd-accounts-id-unfollow instance id)
-  "Unfollow an account corresponding to ID.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  "Unfollow an account corresponding to ID. Return relationship."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id "/unfollow")))
-    (mastodon-api-post url "" (instance-token instance))))
+    (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
 
 (define (mtd-accounts-id-following instance id)
-  "Get following accounts of account coresponding to ID. Return the hash-table
-of json response.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  "Get following accounts of account coresponding to ID. Return list of
+accounts."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id "/following")))
-    (mastodon-api-get url (instance-token instance))))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-accounts-id-statuses instance id)
-  "Get statuses of account corresponding to ID. Return the hash-table of json
-response.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  "Get statuses of account corresponding to ID. Return list of statuses."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id "/statuses")))
-    (mastodon-api-get url (instance-token instance))))
+    (map json->status (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-accounts-search instance name)
   "Search an accounts by username, domain and display name, corresponding to
-NAME argument. Return the hash-table of json response.
-
-This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+NAME argument. Return list of accounts."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/search?q=" name)))
-    (mastodon-api-get url (instance-token instance))))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
 
 ;;;
 ;;; Instance.
 ;;;
 
 (define (mtd-instance-info instance)
-  "Get information about the server. Returns instance hash-table of json
-response."
-  (let ((url (string-append (instance-url instance)
+  "Get information about the server. Returns instance."
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/instance")))
-    (mastodon-api-get url (instance-token instance))))
+    (json->instance (mastodon-api-get url (mastodon-token instance)))))
 
 ;;;
 ;;; Statuses.
@@ -230,39 +214,39 @@ response."
 
 (define (mtd-status-by-id instance id)
   "Get status coresponding to ID."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id)))
-    (mastodon-api-get url (instance-token instance))))
+    (mastodon-api-get url (mastodon-token instance))))
 
 (define (mtd-status-context-by-id instance id)
   "Get status context coresponding to ID."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/context")))
-    (mastodon-api-get url (instance-token instance))))
+    (mastodon-api-get url (mastodon-token instance))))
 
 (define (mtd-status-card-by-id instance id)
   "Get status card coresponding to ID."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/card")))
-    (mastodon-api-get url (instance-token instance))))
+    (mastodon-api-get url (mastodon-token instance))))
 
 (define (mtd-status-id-reblogged-by instance id)
   "Get list of accounts who reblogged status coresponding to ID."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/reblogged_by")))
-    (mastodon-api-get url (instance-token instance))))
+    (mastodon-api-get url (mastodon-token instance))))
 
 (define (mtd-status-id-favourited-by instance id)
   "Get list of accounts who favourited status coresponding to ID."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/favourited_by")))
-    (mastodon-api-get url (instance-token instance))))
+    (mastodon-api-get url (mastodon-token instance))))
 
 (define (mtd-delete-status-by-id instance id)
   "Delete status coresponding to ID."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id)))
-    (mastodon-api-delete url (instance-token instance))))
+    (mastodon-api-delete url (mastodon-token instance))))
 
 (define (mtd-new-status instance args)
   "Post a new status on INSTANCE.
@@ -271,44 +255,44 @@ ARGS is list of parameters. You need to provide \"status\" and/or
 \"media_ids\".
 
 This feature need valid instance token."
-  (let ((url  (string-append (instance-url instance)
+  (let ((url  (string-append (mastodon-url instance)
                              "/api/v1/statuses"))
         (data (scm->json-string args)))
     (mastodon-api-post url data
-                       (instance-token instance)
+                       (mastodon-token instance)
                        #:content-type "application/json")))
 
 (define (mtd-status-id-reblog instance id)
   "Reblog status coresponding to ID.
 
 This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/reblog")))
-    (mastodon-api-post url "" (instance-token instance))))
+    (mastodon-api-post url "" (mastodon-token instance))))
 
 (define (mtd-status-id-unreblog instance id)
   "Unreblog status coresponding to ID.
 
 This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/unreblog")))
-    (mastodon-api-post url "" (instance-token instance))))
+    (mastodon-api-post url "" (mastodon-token instance))))
 
 (define (mtd-status-id-pin instance id)
   "Pin status coresponding to ID.
 
 This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/pin")))
-    (mastodon-api-post url "" (instance-token instance))))
+    (mastodon-api-post url "" (mastodon-token instance))))
 
 (define (mtd-status-id-unpin instance id)
   "Unpin status coresponding to ID.
 
 This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/unpin")))
-    (mastodon-api-post url "" (instance-token instance))))
+    (mastodon-api-post url "" (mastodon-token instance))))
 
 ;;;
 ;;; Search.
@@ -318,9 +302,9 @@ This feature need valid instance token."
   "Search for content in accounts, statuses and hashtags.
 
 This feature need valid instance token."
-  (let ((url (string-append (instance-url instance)
+  (let ((url (string-append (mastodon-url instance)
                             "/api/v2/search?q=" query)))
-    (mastodon-api-get url (instance-token instance))))
+    (mastodon-api-get url (mastodon-token instance))))
 
 ;;;
 ;;; Media.
@@ -357,7 +341,7 @@ This feature need valid instance token."
               file-u8
               (string->u8-list "\r\n--AaB03x--\r\n"))))
 
-  (let* ((url (string-append (instance-url instance)
+  (let* ((url (string-append (mastodon-url instance)
                              "/api/v1/media"))
          (file-port (open-file filepath "rb"))
          (file-u8   (bytevector->u8-list
@@ -365,7 +349,7 @@ This feature need valid instance token."
          (data      (form-data-encode file-u8)))
     (close file-port)
     (mastodon-api-post url (u8-list->bytevector data)
-                       (instance-token instance)
+                       (mastodon-token instance)
                        #:content-type
                        (string-append "multipart/form-data; "
                                       "boundary=AaB03x"))))

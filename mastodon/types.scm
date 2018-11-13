@@ -20,15 +20,14 @@
   #:use-module (srfi srfi-9)
   #:use-module (ice-9 match)
   #:use-module (json)
-  #:export (<mastodon-instance>
-            instance
-            instance?
-            instance-name
-            instance-url
-            instance-token
+  #:export (<mastodon-mastodon>
+            mastodon
+            mastodon?
+            mastodon-name
+            mastodon-url
+            mastodon-token
 
             <mastodon-account>
-            account
             account?
             account-id
             account-username
@@ -70,6 +69,7 @@
             application-website
 
             <mastodon-attachment>
+            attachment?
             attachment-id
             attachment-type
             attachment-url
@@ -80,12 +80,14 @@
             attachment-description
 
             <mastodon-emoji>
+            emoji?
             emoji-shortcode
             emoji-static-url
             emoji-url
             emoji-visible-in-picker
 
             <mastodon-status>
+            status?
             status-id
             status-uri
             status-url
@@ -113,6 +115,32 @@
             status-language
             status-pinned
 
+            <mastodon-relationship>
+            relationship?
+            relationship-id
+            relationship-following
+            relationship-followed-by
+            relationship-blocking
+            relationship-muting
+            relationship-muting-notifications
+            relationship-requested
+            relationship-domain-blocking
+            relationship-showing-reblogs
+            relationship-endorsed
+
+            <mastodon-instance>
+            instance?
+            instance-uri
+            instance-title
+            instance-description
+            instance-email
+            instance-version
+            instance-thumbnail
+            instance-urls
+            instance-stats
+            instance-languages
+            instance-contact-account
+
             ;; Parser
             json->account
             json->field
@@ -120,7 +148,9 @@
             json->application
             json->attachment
             json->emoji
-            json->status))
+            json->status
+            json->relationship
+            json->instance))
 
 (define-syntax-rule (define-json-reader json->record ctor spec ...)
   "Define JSON->RECORD as a procedure that converts a JSON representation,
@@ -160,13 +190,13 @@ and define JSON->RECORD as a conversion from JSON to a record of this type."
 ;;; Define record types
 ;;;
 
-;;; Instance
-(define-record-type <mastodon-instance>
-  (instance name url token)
-  instance?
-  (name  instance-name)
-  (url   instance-url)
-  (token instance-token))
+;;; Instance mastodon
+(define-record-type <mastodon-mastodon>
+  (make-mastodon name url token)
+  mastodon?
+  (name  mastodon-name)
+  (url   mastodon-url)
+  (token mastodon-token))
 
 ;;;
 ;;; JSON Mapping
@@ -280,3 +310,35 @@ and define JSON->RECORD as a conversion from JSON to a record of this type."
   (application            status-application)
   (language               status-language)
   (pinned                 status-pinned))
+
+;;; Relationship <https://docs.joinmastodon.org/api/entities/#relationship>
+(define-json-mapping <mastodon-relationship>
+  make-relationship
+  relationship?
+  json->relationship
+  (id                   relationship-id)
+  (following            relationship-following)
+  (followed-by          relationship-followed-by "followed_by")
+  (blocking             relationship-blocking)
+  (muting               relationship-muting)
+  (muting-notifications relationship-muting-notifications "muting_notifications")
+  (requested            relationship-requested)
+  (domain-blocking      relationship-domain-blocking "domain_blocking")
+  (showing-reblogs      relationship-showing-reblogs "showing_reblogs")
+  (endorsed             relationship-endorsed))
+
+;;; Instance <https://docs.joinmastodon.org/api/entities/#instance>
+(define-json-mapping <mastodon-instance>
+  make-instance
+  instance?
+  json->instance
+  (uri             instance-uri)
+  (title           instance-title)
+  (description     instance-description)
+  (email           instance-email)
+  (version         instance-version)
+  (thumbnail       instance-thumbnail)
+  (urls            instance-urls)
+  (stats           instance-stats)
+  (languages       instance-languages)
+  (contact-account instance-contact-account "contact_account"))

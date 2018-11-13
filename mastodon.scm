@@ -28,17 +28,17 @@
 (define guile-mastodon-version "0.0.1")
 
 (define (get-current-account inst)
-  "Return current account of INST.
+  "Return current account of mastodon instance INST.
 
 This function need valid token."
-  (if (not (string= "" (instance-token inst)))
+  (if (not (string= "" (mastodon-token inst)))
       (let ((my-account (mtd-accounts-verify-credentials inst)))
         (json->account my-account))
       (throw 'mastodon                  ;
              `("error" . "Invalid token"))))
 
 (define (get-account-by-id inst id)
-  "Return account by ID on INST."
+  "Return account by ID on mastodon instance INST."
   (json->account (mtd-accounts-by-id inst id)))
 
 (define* (new-status inst #:optional #:key
@@ -51,9 +51,7 @@ This function need valid token."
                      (language       "")
                      (auto-pinned    #f)
                      (auto-reblog    #f))
-  "Post new status on INST.
-
-This function need valid token."
+  "Post new status on mastodon instance INST."
   (let ((args (cons* (if (not (string= status ""))
                          `("status" . ,status)
                          #f)
