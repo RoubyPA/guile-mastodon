@@ -3,10 +3,25 @@
 #+TITLE: TODO list
 #+STARTUP: indent
 
-* REST API
-
-Add the REST API of mastodon. See mastodon [[https://docs.joinmastodon.org/][documentations]].
-
-* Documentation
-
-** texi documentation
+* TODO REST API
+** TODO [[https://docs.joinmastodon.org/api/rest/accounts/][Accounts]]
+*** TODO [[https://docs.joinmastodon.org/api/rest/accounts/#patch-api-v1-accounts-update-credentials][PATCH credentials]]
+** TODO [[https://docs.joinmastodon.org/api/rest/apps/][APPS]]
+** TODO [[https://docs.joinmastodon.org/api/rest/blocks/][Blocks]]
+** TODO [[https://docs.joinmastodon.org/api/rest/custom-emojis/][Emojis]]
+** TODO [[https://docs.joinmastodon.org/api/rest/domain-blocks/][Domain blocks]]
+** TODO [[https://docs.joinmastodon.org/api/rest/endorsements/][Endorsements]]
+** TODO [[https://docs.joinmastodon.org/api/rest/favourites/][Favourites]]
+** TODO [[https://docs.joinmastodon.org/api/rest/filters/][Filters]]
+** TODO [[https://docs.joinmastodon.org/api/rest/follow-requests/][Follow requests]]
+** TODO [[https://docs.joinmastodon.org/api/rest/follow-suggestions/][Follow suggestions]]
+** TODO [[https://docs.joinmastodon.org/api/rest/lists/][Lists]]
+** TODO [[https://docs.joinmastodon.org/api/rest/media/][Media attachments]]
+*** TODO Media POST description
+*** TODO Media PUT
+** TODO [[https://docs.joinmastodon.org/api/rest/mutes/][Mutes]]
+** TODO [[https://docs.joinmastodon.org/api/rest/notifications/][Notifications]]
+** TODO [[https://docs.joinmastodon.org/api/rest/reports/][Reports]]
+** TODO [[https://docs.joinmastodon.org/api/rest/search/][Add parameters]]
+** TODO [[https://docs.joinmastodon.org/api/rest/timelines/][Timelines]]
+* TODO [[https://docs.joinmastodon.org/api/streaming/][Streaming API]]
