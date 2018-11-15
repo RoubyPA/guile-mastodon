@@ -338,8 +338,9 @@ ARGS is list of parameters. You need to provide \"status\" and/or
                      (get-bytevector-all file-port)))
          (data      (form-data-encode file-u8)))
     (close file-port)
-    (mastodon-api-post url (u8-list->bytevector data)
-                       (mastodon-token instance)
-                       #:content-type
-                       (string-append "multipart/form-data; "
-                                      "boundary=AaB03x"))))
+    (json->attachment
+     (mastodon-api-post url (u8-list->bytevector data)
+                        (mastodon-token instance)
+                        #:content-type
+                        (string-append "multipart/form-data; "
+                                       "boundary=AaB03x")))))
