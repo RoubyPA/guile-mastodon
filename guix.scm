@@ -22,6 +22,7 @@
              (guix utils)
              (guix build-system gnu)
              (gnu packages)
+             (gnu packages tls)
              (gnu packages guile)
              (gnu packages autotools)
              (gnu packages pkg-config))
@@ -38,7 +39,8 @@
      ("pkg-config" ,pkg-config)))
   (propagated-inputs
    `(("guile" ,guile-2.2)
-     ("guile-json" ,guile-json)))
+     ("guile-json" ,guile-json)
+     ("gnutls" ,gnutls)))
   (home-page "https://framagit.org/prouby/guile-mastodon")
   (synopsis "Guile mastodon module.")
   (description "Mastodon module for guile.")
