@@ -163,7 +163,6 @@
 
             <mastodon-results>
             results?
-            json->results
             results-accounts
             results-statuses
             results-hashtags
@@ -179,7 +178,8 @@
             json->relationship
             json->instance
             json->context
-            json->card))
+            json->card
+            json->results))
 
 (define-syntax-rule (define-json-reader json->record ctor spec ...)
   "Define JSON->RECORD as a procedure that converts a JSON representation,
