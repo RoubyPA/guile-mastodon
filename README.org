@@ -1,11 +1,43 @@
 #+TITLE: Guile-Mastodon
 #+STARTUP: indent
 
+* Description
+
+This is a [[https://www.gnu.org/software/guile/][GNU Guile]] module implementing [[https://joinmastodon.org/][Mastodon]] REST API protocol.
+
 * Installation
 
-** Use autotools
+** GNU Guix
 
-Guile-mastodon use autotools build system.
+Guile-mastodon is available on Guix.
+
+#+BEGIN_SRC shell
+guix package -i guile-mastodon
+#+END_SRC
+
+*** Master version
+
+To get the master version, clone the git repository.
+
+#+BEGIN_SRC shell
+git clone https://framagit.org/prouby/guile-mastodon
+#+END_SRC
+
+And install guile-mastodon from local package.
+
+#+BEGIN_SRC shell
+guix package -f guix.scm
+#+END_SRC
+
+** Other system
+
+Firstly, clone the git repository.
+
+#+BEGIN_SRC shell
+git clone https://framagit.org/prouby/guile-mastodon
+#+END_SRC
+
+Compile and install.
 
 #+BEGIN_SRC shell
 ./bootstrap
@@ -14,39 +46,29 @@ make
 make install
 #+END_SRC
 
-** Use GNU Guix
-
-Guile-mastodon is available with local Guix package.
-
-#+BEGIN_SRC shell
-guix build -f guix.scm
-guix package -f guix.scm
-#+END_SRC
-
-
 * Using
 
-** Create new instance record
+** Module structure
 
-#+BEGIN_SRC scheme
-  (use-modules (mastodon types)
+| File               | Contents                | Modules            |
+|--------------------+-------------------------+--------------------|
+| mastodon.scm       | High level function     | =(mastodon)=       |
+| mastodon/types.scm | Record and json parsers | =(mastodon types)= |
+| mastodon/api.scm   | Low level function      | =(mastodon api)=   |
 
-  ;; Create new instance with token
-  (instance "Framapiaf"              ;; Instance name
-            "https://framapiaf.org"  ;; Instance url
-            "<acces_token>")         ;; Access token
-#+END_SRC
+** Example
 
-** New status
+*** Post status
 
 Post a new status on mastodon instance.
 
 #+BEGIN_SRC scheme
-  (use-modules (mastodon))
+  (use-modules (mastodon)
+               (mastodon types))
 
-  (let ((my-inst (instance "Framapiaf"
-                           "https://framapiaf.org"
-                           "<acces_token>")))
+  (let ((my-inst (make-mastodon "Framapiaf"
+                                "https://framapiaf.org"
+                                "<acces_token>")))
     (new-status my-inst
                 #:status "Hello from guile-mastodon !"))
 #+END_SRC
