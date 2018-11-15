@@ -33,7 +33,8 @@ guix:
    - guix build -f guix.scm
 
 mastodon:
-  only: tags
+  only:
+    - tags
   stage: share
   script:
     - guix environment --ad-hoc -l guix.scm -- guile ~/runner/post-new-tags.scm
