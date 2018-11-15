@@ -17,6 +17,7 @@
 stages:
   - build
   - package
+  - share
 
 make:
   stage: build
@@ -30,3 +31,9 @@ guix:
  stage: package
  script:
    - guix build -f guix.scm
+
+mastodon:
+  only: tags
+  stage: share
+  script:
+    - guix environment --ad-hoc -l guix.scm -- guile ~/runner/post-new-tags.scm
