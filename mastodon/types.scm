@@ -141,6 +141,11 @@
             instance-languages
             instance-contact-account
 
+            <mastodon-context>
+            context?
+            context-ancestors
+            context-descendants
+
             ;; Parser
             json->account
             json->field
@@ -150,7 +155,8 @@
             json->emoji
             json->status
             json->relationship
-            json->instance))
+            json->instance
+            json->context))
 
 (define-syntax-rule (define-json-reader json->record ctor spec ...)
   "Define JSON->RECORD as a procedure that converts a JSON representation,
@@ -342,3 +348,11 @@ and define JSON->RECORD as a conversion from JSON to a record of this type."
   (stats           instance-stats)
   (languages       instance-languages)
   (contact-account instance-contact-account "contact_account"))
+
+;;; Context <https://docs.joinmastodon.org/api/entities/#context>
+(define-json-mapping <mastodon-context>
+  make-context
+  context?
+  json->context
+  (ancestors   context-ancestors)
+  (descendants context-descendants))

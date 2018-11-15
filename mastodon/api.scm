@@ -213,16 +213,16 @@ NAME argument. Return list of accounts."
 ;;;
 
 (define (mtd-status-by-id instance id)
-  "Get status coresponding to ID."
+  "Get status coresponding to ID. Return status."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id)))
-    (mastodon-api-get url (mastodon-token instance))))
+    (json->status (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-context-by-id instance id)
   "Get status context coresponding to ID."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/context")))
-    (mastodon-api-get url (mastodon-token instance))))
+    (json->context (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-card-by-id instance id)
   "Get status card coresponding to ID."
