@@ -21,7 +21,7 @@
   #:use-module (ice-9 match)
   #:use-module (json)
   #:export (<mastodon-mastodon>
-            mastodon
+            make-mastodon
             mastodon?
             mastodon-name
             mastodon-url
