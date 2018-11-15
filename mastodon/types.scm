@@ -161,6 +161,13 @@
             card-width
             card-height
 
+            <mastodon-results>
+            results?
+            json->results
+            results-accounts
+            results-statuses
+            results-hashtags
+
             ;; Parser
             json->account
             json->field
@@ -390,3 +397,12 @@ and define JSON->RECORD as a conversion from JSON to a record of this type."
   (html          card-html)
   (width         card-width)
   (height        card-height))
+
+;;; Results <https://docs.joinmastodon.org/api/entities/#results>
+(define-json-mapping <mastodon-results>
+  make-results
+  results?
+  json->results
+  (accounts results-accounts)
+  (statuses results-statuses)
+  (hashtags results-hashtags))

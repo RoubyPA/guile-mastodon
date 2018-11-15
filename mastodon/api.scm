@@ -291,12 +291,10 @@ ARGS is list of parameters. You need to provide \"status\" and/or
 ;;;
 
 (define (mtd-search instance query)
-  "Search for content in accounts, statuses and hashtags.
-
-This feature need valid instance token."
+  "Search for content in accounts, statuses and hashtags. Return results."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v2/search?q=" query)))
-    (mastodon-api-get url (mastodon-token instance))))
+    (json->results (mastodon-api-get url (mastodon-token instance)))))
 
 ;;;
 ;;; Media.
