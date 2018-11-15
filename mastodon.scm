@@ -72,8 +72,7 @@ This function need valid token."
                          #f)
                      ;; TODO test visibility is correct
                      `(("visibility" . ,visibility)))))
-    (let* ((new (json->status
-                 (mtd-new-status inst (remove not args))))
+    (let* ((new (mtd-new-status inst (remove not args)))
            (id (status-id new)))
       (when auto-pinned (mtd-status-id-pin inst id))
       (when auto-reblog (mtd-status-id-reblog inst id))

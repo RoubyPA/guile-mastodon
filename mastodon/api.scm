@@ -225,22 +225,24 @@ NAME argument. Return list of accounts."
     (json->context (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-card-by-id instance id)
-  "Get status card coresponding to ID."
+  "Get status card coresponding to ID. Return card."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/card")))
     (json->card (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-id-reblogged-by instance id)
-  "Get list of accounts who reblogged status coresponding to ID."
+  "Get list of accounts who reblogged status coresponding to ID. Return list
+of accounts."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/reblogged_by")))
-    (mastodon-api-get url (mastodon-token instance))))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-id-favourited-by instance id)
-  "Get list of accounts who favourited status coresponding to ID."
+  "Get list of accounts who favourited status coresponding to ID. Return list
+of accounts."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/favourited_by")))
-    (mastodon-api-get url (mastodon-token instance))))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-delete-status-by-id instance id)
   "Delete status coresponding to ID."
@@ -249,50 +251,40 @@ NAME argument. Return list of accounts."
     (mastodon-api-delete url (mastodon-token instance))))
 
 (define (mtd-new-status instance args)
-  "Post a new status on INSTANCE.
+  "Post a new status on INSTANCE. Return status.
 
 ARGS is list of parameters. You need to provide \"status\" and/or
-\"media_ids\".
-
-This feature need valid instance token."
+\"media_ids\"."
   (let ((url  (string-append (mastodon-url instance)
                              "/api/v1/statuses"))
         (data (scm->json-string args)))
-    (mastodon-api-post url data
-                       (mastodon-token instance)
-                       #:content-type "application/json")))
+    (json->status (mastodon-api-post url data
+                                     (mastodon-token instance)
+                                     #:content-type "application/json"))))
 
 (define (mtd-status-id-reblog instance id)
-  "Reblog status coresponding to ID.
-
-This feature need valid instance token."
+  "Reblog status coresponding to ID. Return status."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/reblog")))
-    (mastodon-api-post url "" (mastodon-token instance))))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
 
 (define (mtd-status-id-unreblog instance id)
-  "Unreblog status coresponding to ID.
-
-This feature need valid instance token."
+  "Unreblog status coresponding to ID. Return status."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/unreblog")))
-    (mastodon-api-post url "" (mastodon-token instance))))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
 
 (define (mtd-status-id-pin instance id)
-  "Pin status coresponding to ID.
-
-This feature need valid instance token."
+  "Pin status coresponding to ID. Return status."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/pin")))
-    (mastodon-api-post url "" (mastodon-token instance))))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
 
 (define (mtd-status-id-unpin instance id)
-  "Unpin status coresponding to ID.
-
-This feature need valid instance token."
+  "Unpin status coresponding to ID. Return status."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/unpin")))
-    (mastodon-api-post url "" (mastodon-token instance))))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
 
 ;;;
 ;;; Search.
