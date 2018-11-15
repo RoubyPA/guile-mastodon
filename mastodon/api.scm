@@ -228,7 +228,7 @@ NAME argument. Return list of accounts."
   "Get status card coresponding to ID."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/card")))
-    (mastodon-api-get url (mastodon-token instance))))
+    (json->card (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-id-reblogged-by instance id)
   "Get list of accounts who reblogged status coresponding to ID."

@@ -146,6 +146,21 @@
             context-ancestors
             context-descendants
 
+            <mastodon-card>
+            card?
+            card-url
+            card-title
+            card-description
+            card-image
+            card-type
+            card-author-name
+            card-author-url
+            card-provider-name
+            card-provider-url
+            card-html
+            card-width
+            card-height
+
             ;; Parser
             json->account
             json->field
@@ -156,7 +171,8 @@
             json->status
             json->relationship
             json->instance
-            json->context))
+            json->context
+            json->card))
 
 (define-syntax-rule (define-json-reader json->record ctor spec ...)
   "Define JSON->RECORD as a procedure that converts a JSON representation,
@@ -356,3 +372,21 @@ and define JSON->RECORD as a conversion from JSON to a record of this type."
   json->context
   (ancestors   context-ancestors)
   (descendants context-descendants))
+
+;;; Card <https://docs.joinmastodon.org/api/entities/#card>
+(define-json-mapping <mastodon-card>
+  make-card
+  card?
+  json->card
+  (url           card-url)
+  (title         card-title)
+  (description   card-description)
+  (image         card-image)
+  (type          card-type)
+  (author-name   card-author-name "author_name")
+  (author-url    card-author-url "author_url")
+  (provider-name card-provider-name "provider_name")
+  (provider-url  card-provider-url "provider_url")
+  (html          card-html)
+  (width         card-width)
+  (height        card-height))
