@@ -39,6 +39,8 @@
             mtd-accounts-id-following
             mtd-accounts-id-statuses
             mtd-accounts-search
+            ;; Apps
+            mtd-apps-verify-credentials
             ;; Instance
             mtd-instance-info
             ;; Statuses
@@ -197,6 +199,16 @@ NAME argument. Return list of accounts."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/search?q=" name)))
     (map json->account (mastodon-api-get url (mastodon-token instance)))))
+
+;;;
+;;; Apps.
+;;;
+
+(define (mtd-apps-verify-credentials instance)
+  "Confirm that the app’s OAuth2 credentials work. Return application."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/apps/verify_credentials")))
+    (json->application (mastodon-api-get url (mastodon-token instance)))))
 
 ;;;
 ;;; Instance.
