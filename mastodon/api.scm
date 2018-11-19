@@ -47,6 +47,10 @@
             mtd-account-unblock
             ;; Emoji
             mtd-custom-emojis
+            ;; Domain blocks
+            mtd-domain-blocked
+            mtd-domain-block
+            mtd-domain-unblock
             ;; Instance
             mtd-instance-info
             ;; Statuses
@@ -126,17 +130,21 @@ error with `mastodon' tag."
                                 (bytevector->string body "utf-8")
                                 body))))))))
 
-(define (mastodon-api-delete request token)
+(define* (mastodon-api-delete request token #:key (data #f)
+                              (content-type "application/x-www-form-urlencoded"))
   "Send http delete request to mastodon instance. REQUEST is url of api, and
 TOKEN is authentification token. Return hashtable of json response or throw an
 error with `mastodon' tag."
   (let-values (((res body)
                 (http-delete request
-                             #:body #f
+                             #:body (if (string? data)
+                                        (string->bytevector data "utf-8")
+                                        data)
                              #:version '(1 . 1)
                              #:keep-alive? #f
                              #:headers `((Authorization
-                                          . ,(string-append "Bearer " token)))
+                                          . ,(string-append "Bearer " token))
+                                         (Content-Type . ,content-type))
                              #:decode-body? #t
                              #:streaming? #f)))
     (match (response-code res)
@@ -247,6 +255,34 @@ NAME argument. Return list of accounts."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/custom_emojis")))
     (map json->emoji (mastodon-api-get url (mastodon-token instance)))))
+
+;;;
+;;; Domain blocks.
+;;;
+
+(define (mtd-domain-blocked instance)
+  "Domains the user has blocked. Return list of string."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/domain_blocks")))
+    (mastodon-api-get url (mastodon-token instance))))
+
+(define (mtd-domain-block instance domain)
+  "Block a DOMAIN to hide all public posts from it, all notifications from it,
+and remove all followers from it."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/domains/domain_blocks"))
+        (data (scm->json-string `(("domain" . ,domain)))))
+    (mastodon-api-post url data
+                       (mastodon-token instance))))
+
+(define (mtd-domain-unblock instance domain)
+  "Remove a DOMAIN block."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/domains/domain_blocks"))
+        (data (scm->json-string `(("domain" . ,domain)))))
+    (mastodon-api-delete url (mastodon-token instance)
+                         #:data data
+                         #:content-type "application/json")))
 
 ;;;
 ;;; Instance.
