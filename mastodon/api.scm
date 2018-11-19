@@ -41,6 +41,8 @@
             mtd-accounts-search
             ;; Apps
             mtd-apps-verify-credentials
+            ;; Emoji
+            mtd-custom-emojis
             ;; Instance
             mtd-instance-info
             ;; Statuses
@@ -209,6 +211,16 @@ NAME argument. Return list of accounts."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/apps/verify_credentials")))
     (json->application (mastodon-api-get url (mastodon-token instance)))))
+
+;;;
+;;; Emoji
+;;;
+
+(define (mtd-custom-emojis instance)
+  "Custom emojis that are available on the server. Return list of Emoji."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/custom_emojis")))
+    (map json->emoji (mastodon-api-get url (mastodon-token instance)))))
 
 ;;;
 ;;; Instance.
