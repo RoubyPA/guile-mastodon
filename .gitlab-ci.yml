@@ -15,17 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 stages:
-  - build
   - package
   - share
-
-make:
-  stage: build
-  script:
-    - ./bootstrap
-    - ./configure
-    - make
-    - make check
 
 guix:
  stage: package
