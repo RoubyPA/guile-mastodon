@@ -41,6 +41,10 @@
             mtd-accounts-search
             ;; Apps
             mtd-apps-verify-credentials
+            ;; Blocks
+            mtd-account-blocked
+            mtd-account-block
+            mtd-account-unblock
             ;; Emoji
             mtd-custom-emojis
             ;; Instance
@@ -213,7 +217,29 @@ NAME argument. Return list of accounts."
     (json->application (mastodon-api-get url (mastodon-token instance)))))
 
 ;;;
-;;; Emoji
+;;; Blocks.
+;;;
+
+(define (mtd-account-blocked instance)
+  "Accounts the user has blocked. Return list of account."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/blocks")))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
+
+(define (mtd-account-block instance id)
+  "Block an account. Returns relationship"
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/accounts/" id "/block")))
+    (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
+
+(define (mtd-account-unblock instance id)
+  "Unblock an account. Returns relationship"
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/accounts/" id "/unblock")))
+    (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
+
+;;;
+;;; Emoji.
 ;;;
 
 (define (mtd-custom-emojis instance)
