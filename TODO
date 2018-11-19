@@ -4,12 +4,20 @@
 #+STARTUP: indent
 
 * TODO REST API
+** TODO *0.1.0* Make same api for post and delete
+
+Made same options for api functions POST and DELETE.
+
++(mastodon-api-post   resquest data token #:content-type)+
+(mastodon-api-post   resquest token #:data #:content-type)
+(mastodon-api-delete resquest token #:data #:content-type)
+
 ** TODO [[https://docs.joinmastodon.org/api/rest/accounts/][Accounts]]
 *** TODO [[https://docs.joinmastodon.org/api/rest/accounts/#patch-api-v1-accounts-update-credentials][PATCH credentials]]
-** TODO [[https://docs.joinmastodon.org/api/rest/apps/][APPS]]
-** TODO [[https://docs.joinmastodon.org/api/rest/blocks/][Blocks]]
-** TODO [[https://docs.joinmastodon.org/api/rest/custom-emojis/][Emojis]]
-** TODO [[https://docs.joinmastodon.org/api/rest/domain-blocks/][Domain blocks]]
+** DONE [[https://docs.joinmastodon.org/api/rest/apps/][APPS]]
+** DONE [[https://docs.joinmastodon.org/api/rest/blocks/][Blocks]]
+** DONE [[https://docs.joinmastodon.org/api/rest/custom-emojis/][Emojis]]
+** DONE [[https://docs.joinmastodon.org/api/rest/domain-blocks/][Domain blocks]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/endorsements/][Endorsements]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/favourites/][Favourites]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/filters/][Filters]]
