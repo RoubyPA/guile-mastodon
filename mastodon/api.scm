@@ -51,6 +51,10 @@
             mtd-domain-blocked
             mtd-domain-block
             mtd-domain-unblock
+            ;; Endorsements
+            mtd-endorsed
+            mtd-endorse
+            mtd-unendorse
             ;; Instance
             mtd-instance-info
             ;; Statuses
@@ -283,6 +287,29 @@ and remove all followers from it."
     (mastodon-api-delete url (mastodon-token instance)
                          #:data data
                          #:content-type "application/json")))
+
+;;;
+;;; Endorsements.
+;;;
+
+(define (mtd-endorsed instance)
+  "List of Endorsements accounts. Return accounts list."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/endorsements")))
+    (map json->account (mastodon-api-get url (mastodon-token instance)))))
+
+(define (mtd-endorse instance id)
+  "Endorse an account, i.e. choose to feature the account on the user’s public
+profile. Returns Relationship"
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/accounts/" id "/pin")))
+    (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
+
+(define (mtd-unendorse instance id)
+  "Undo endorse of an account. Returns Relationship"
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/accounts/" id "/unpin")))
+    (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
 
 ;;;
 ;;; Instance.
