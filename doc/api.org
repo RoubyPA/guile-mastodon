@@ -1,0 +1,267 @@
+#+title: Guile-mastodon functions.
+#+startup: indent
+
+* Top level functions
+
+Top level functions is more user frendly function.
+
+** Function =new-status=
+
+For more information see the [[https://docs.joinmastodon.org/api/rest/statuses/][Mastodon documentations]].
+
+| Args           | Type                | Description                         | Default value   |
+|----------------+---------------------+-------------------------------------+-----------------|
+| inst           | <mastodon-mastodon> | Instance to use                     | None (Required) |
+| status         | String              | Text of status                      | ""              |
+| in-reply-to-id | String              | Id of status                        | ""              |
+| media-ids      | List of String      | List of media ids to use in status  | '()             |
+| sensitive      | Boolean             | True if status content is NSFW      | #f              |
+| spoiler-text   | String              | Spoiler text                        | ""              |
+| visibility     | String              | Direct, private, unlisted or public | "public"        |
+| language       | String              | Override language code (ISO 639-2)  | ""              |
+| auto-pinned    | Boolean             | Pin the new status                  | #f              |
+| auto-reblog    | Boolean             | Reblog the neww status              | #f              |
+
+
+
+* Low level functions
+
+** Accounts
+
+*** Function =mtd-accounts-by-id=
+
+Get account by id.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+*** Function =mtd-accounts-verify-credentials=
+
+Get current account.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+*** Function =mtd-accounts-id-followers=
+
+Get account followers.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+*** Function =mtd-accounts-id-follow=
+
+Follow an account.
+
+| Args     | Type                | Description       |
+|----------+---------------------+-------------------|
+| instance | <mastodon-mastodon> | Instance to use   |
+| id       | String              | Account to follow |
+
+*** Function =mtd-accounts-id-unfollow=
+
+Unfollow an account.
+
+| Args     | Type                | Description         |
+|----------+---------------------+---------------------|
+| instance | <mastodon-mastodon> | Instance to use     |
+| id       | String              | Account to unfollow |
+
+*** Function =mtd-accounts-id-following=
+
+Following accounts for accounts id.
+
+| Args     | Type                | Description         |
+|----------+---------------------+---------------------|
+| instance | <mastodon-mastodon> | Instance to use     |
+| id       | String              | Account id          |
+
+*** Function =mtd-accounts-id-statuses=
+
+Status of account.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+*** Function =mtd-accounts-search=
+
+Search an accounts by username, domain and display name.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| name     | String              | Query           |
+
+
+
+** Apps
+
+*** Function =mtd-apps-verify-credentials=
+
+Confirm that the app’s OAuth2 credentials work.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+
+** Blocks
+
+*** Function =mtd-account-blocked=
+
+Accounts the user has blocked.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+*** Function =mtd-account-block=
+
+Block an account.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+*** Function =mtd-account-unblock=
+
+Unblock an account.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+
+** Emojis
+
+*** Function =mtd-custom-emojis=
+
+Custom emojis that are available on the server.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+
+
+** Domain blocks
+
+*** Function =mtd-domain-blocked=
+
+Domains the user has blocked.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+*** Function =mtd-domain-block=
+
+Block a domain to hide all public posts from it, all notifications from it,
+and remove all followers from it.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| domain   | String              | Domain url      |
+
+*** Function =mtd-domain-unblock=
+
+Remove a domain block.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| domain   | String              | Domain url      |
+
+
+** Endorsements
+
+*** Function =mtd-endorsed=
+
+List of Endorsements accounts.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+*** Function =mtd-endorse=
+
+Endorse an account, i.e. choose to feature the account on the user’s public
+profile.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+*** Function =mtd-unendorse=
+
+Undo endorse of an account.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account id      |
+
+
+** Favourites
+
+*** Function =mtd-favourited=
+*** Function =mtd-favourite-status=
+*** Function =mtd-unfavourite-status=
+
+
+
+** Instance
+
+*** Function =mtd-instance-info=
+
+Get information about the server.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
+
+** Statuses
+
+*** Function =mtd-status-by-id=
+*** Function =mtd-status-context-by-id=
+*** Function =mtd-status-card-by-id=
+*** Function =mtd-status-id-reblogged-by=
+*** Function =mtd-status-id-favourited-by=
+*** Function =mtd-delete-status-by-id=
+*** Function =mtd-new-status=
+*** Function =mtd-status-id-reblog=
+*** Function =mtd-status-id-unreblog=
+*** Function =mtd-status-id-pin=
+*** Function =mtd-status-id-unpin=
+
+
+** Search
+
+*** Function =mtd-search=
+
+
+
+** Media
+
+*** Function =mtd-post-media=
+
+
+** Mutes
+
+*** Function =mtd-muted=
+*** Function =mtd-mute=
+*** Function =mtd-unmute=
+*** Function =mtd-status-mute=
+*** Function =mtd-status-unmute=

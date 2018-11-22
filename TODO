@@ -18,8 +18,8 @@ Made same options for api functions POST and DELETE.
 ** DONE [[https://docs.joinmastodon.org/api/rest/blocks/][Blocks]]
 ** DONE [[https://docs.joinmastodon.org/api/rest/custom-emojis/][Emojis]]
 ** DONE [[https://docs.joinmastodon.org/api/rest/domain-blocks/][Domain blocks]]
-** TODO [[https://docs.joinmastodon.org/api/rest/endorsements/][Endorsements]]
-** TODO [[https://docs.joinmastodon.org/api/rest/favourites/][Favourites]]
+** DONE [[https://docs.joinmastodon.org/api/rest/endorsements/][Endorsements]]
+** DONE [[https://docs.joinmastodon.org/api/rest/favourites/][Favourites]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/filters/][Filters]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/follow-requests/][Follow requests]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/follow-suggestions/][Follow suggestions]]
@@ -27,7 +27,7 @@ Made same options for api functions POST and DELETE.
 ** TODO [[https://docs.joinmastodon.org/api/rest/media/][Media attachments]]
 *** TODO Media POST description
 *** TODO Media PUT
-** TODO [[https://docs.joinmastodon.org/api/rest/mutes/][Mutes]]
+** DONE [[https://docs.joinmastodon.org/api/rest/mutes/][Mutes]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/notifications/][Notifications]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/reports/][Reports]]
 ** TODO [[https://docs.joinmastodon.org/api/rest/search/][Add parameters]]
