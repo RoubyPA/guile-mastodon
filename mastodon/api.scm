@@ -55,6 +55,10 @@
             mtd-endorsed
             mtd-endorse
             mtd-unendorse
+            ;; Favourites
+            mtd-favourited
+            mtd-favourite-status
+            mtd-unfavourite-status
             ;; Instance
             mtd-instance-info
             ;; Statuses
@@ -310,6 +314,28 @@ profile. Returns Relationship"
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/accounts/" id "/unpin")))
     (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
+
+;;;
+;;; Favourites.
+;;;
+
+(define (mtd-favourited instance)
+  "Statuses the user has favourited. Return list of status."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/favourites")))
+    (map json->status (mastodon-api-get url (mastodon-token instance)))))
+
+(define (mtd-favourite-status instance id)
+  "Favourite a status. Return Status."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/statuses/" id "/favourite")))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
+
+(define (mtd-unfavourite-status instance id)
+  "Undo the favourite of a status. Return Status."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/statuses/" id "/unfavourite")))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
 
 ;;;
 ;;; Instance.
