@@ -76,7 +76,13 @@
             ;; Search
             mtd-search
             ;; Media
-            mtd-post-media))
+            mtd-post-media
+            ;; Mutes
+            mtd-muted
+            mtd-mute
+            mtd-unmute
+            mtd-status-mute
+            mtd-status-unmute))
 
 ;;;
 ;;; Method.
@@ -483,3 +489,40 @@ ARGS is list of parameters. You need to provide \"status\" and/or
                         #:content-type
                         (string-append "multipart/form-data; "
                                        "boundary=AaB03x")))))
+
+;;;
+;;; Mutes.
+;;;
+
+(define (mtd-muted instance)
+  "Accounts the user has muted. Return list of account."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/mutes")))
+    (json->account (mastodon-api-get url (mastodon-token instance)))))
+
+(define (mtd-mute instance id)
+  "Mute an account. Return relationship."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/accounts/" id "/mute")))
+    (json->relationship
+     (mastodon-api-post url "" (mastodon-token instance)))))
+
+(define (mtd-unmute instance id)
+  "Unmute an account. Return relationship."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/accounts/" id "/unmute")))
+    (json->relationship
+     (mastodon-api-post url "" (mastodon-token instance)))))
+
+(define (mtd-status-mute instance id)
+  "Mute the conversation the status is part of, to no longer be notified about
+it. Return status."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/statuses/" id "/mute")))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
+
+(define (mtd-status-unmute instance id)
+  "Unmute the conversation the status is part of. Return status."
+  (let ((url (string-append (mastodon-url instance)
+                            "/api/v1/statuses/" id "/unmute")))
+    (json->status (mastodon-api-post url "" (mastodon-token instance)))))
