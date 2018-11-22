@@ -48,6 +48,10 @@ make install
 
 * Using
 
+** Documentation
+
+[[doc/api.org][Module documentation.]]
+
 ** Module structure
 
 | File               | Contents                | Modules            |
