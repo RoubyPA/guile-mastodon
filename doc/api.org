@@ -216,8 +216,30 @@ Undo endorse of an account.
 ** Favourites
 
 *** Function =mtd-favourited=
+
+Statuses the user has favourited. Return list of status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
 *** Function =mtd-favourite-status=
+
+Favourite a status. Return Status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-unfavourite-status=
+
+Undo the favourite of a status. Return Status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
 
 
 
