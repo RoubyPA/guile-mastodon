@@ -257,16 +257,127 @@ Get information about the server.
 ** Statuses
 
 *** Function =mtd-status-by-id=
+
+Get status coresponding to ID. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-context-by-id=
+
+Get status context coresponding to ID. Return context.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-card-by-id=
+
+Get status card coresponding to ID. Return card.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-id-reblogged-by=
+
+Get list of accounts who reblogged status coresponding to ID. Return list of
+accounts.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-id-favourited-by=
+
+Get list of accounts who favourited status coresponding to ID. Return list of
+accounts.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-delete-status-by-id=
+
+Delete status coresponding to ID.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-new-status=
+
+Post a new status on instance. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| args     | List                | List of args    |
+
+**** Parameters
+
+ARGS is list of parameters. You need to provide "status" and/or
+"media_ids".
+
+#+BEGIN_SRC scheme
+;; Parameters format
+'((arg1 . value1)
+  (arg2 . value2)
+  ...)
+#+END_SRC
+
+| Parameters     | Description                                             |
+|----------------+---------------------------------------------------------|
+| status         | The text of the status                                  |
+| in_reply_to_id | ID of the status you want to reply to                   |
+| media_ids      | Array of media IDs to attach to the status              |
+| sensitive      | Mark the media in the status as sensitive               |
+| spoiler_text   | Text to be shown as a warning before the actual content |
+| visibility     | One of direct, private, unlisted public                 |
+| language       | ride language code of the toot (ISO 639-2)              |
+
 *** Function =mtd-status-id-reblog=
+
+Reblog status coresponding to ID. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-id-unreblog=
+
+Unreblog status coresponding to ID. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-id-pin=
+
+Pin status coresponding to ID. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
+
 *** Function =mtd-status-id-unpin=
+
+Unpin status coresponding to ID. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status id       |
 
 
 ** Search

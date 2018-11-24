@@ -376,7 +376,7 @@ profile. Returns Relationship"
     (json->status (mastodon-api-get url (mastodon-token instance)))))
 
 (define (mtd-status-context-by-id instance id)
-  "Get status context coresponding to ID."
+  "Get status context coresponding to ID. Return context."
   (let ((url (string-append (mastodon-url instance)
                             "/api/v1/statuses/" id "/context")))
     (json->context (mastodon-api-get url (mastodon-token instance)))))
