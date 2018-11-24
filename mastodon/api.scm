@@ -175,26 +175,38 @@ error with `mastodon' tag."
                                 body))))))))
 
 ;;;
+;;; Request syntax.
+;;;
+
+(define-syntax-rule (define-get-request DOCSTRING (name instance args ...)
+                      path path-suffix json->value)
+  (define (name instance args ...)
+    DOCSTRING
+    (let ((url (string-append (mastodon-url instance)
+                              path args ... path-suffix)))
+      (json->value (mastodon-api-get url (mastodon-token instance))))))
+
+;;;
 ;;; Accounts.
 ;;;
 
-(define (mtd-accounts-by-id instance id)
+(define-get-request
   "Get account by user ID. Return account."
-  (let ((url (string-append (mastodon-url instance)
-                            "/api/v1/accounts/" id)))
-    (json->account (mastodon-api-get url (mastodon-token instance)))))
+  (mtd-accounts-by-id instance id)
+  "/api/v1/accounts/" ""
+  json->account)
 
-(define (mtd-accounts-verify-credentials instance)
+(define-get-request
   "Get current account. Return account."
-  (let ((url (string-append (mastodon-url instance)
-                            "/api/v1/accounts/verify_credentials")))
-    (json->account (mastodon-api-get url (mastodon-token instance)))))
+  (mtd-accounts-verify-credentials instance)
+  "/api/v1/accounts/verify_credentials" ""
+  json->account)
 
-(define (mtd-accounts-id-followers instance id)
+(define-get-request
   "Get account followers. Return list of accounts."
-  (let ((url (string-append (mastodon-url instance)
-                            "/api/v1/accounts/" id "/followers")))
-    (map json->account (mastodon-api-get url (mastodon-token instance)))))
+  (mtd-accounts-id-followers instance id)
+  "/api/v1/accounts/" "/followers"
+  (λ (l) (map json->account l)))
 
 (define (mtd-accounts-id-follow instance id)
   "Follow an account corresponding to ID. Return relationship."
@@ -208,25 +220,25 @@ error with `mastodon' tag."
                             "/api/v1/accounts/" id "/unfollow")))
     (json->relationship (mastodon-api-post url "" (mastodon-token instance)))))
 
-(define (mtd-accounts-id-following instance id)
+(define-get-request
   "Get following accounts of account coresponding to ID. Return list of
 accounts."
-  (let ((url (string-append (mastodon-url instance)
-                            "/api/v1/accounts/" id "/following")))
-    (map json->account (mastodon-api-get url (mastodon-token instance)))))
+  (mtd-accounts-id-following instance id)
+  "/api/v1/accounts/" "/following"
+  (λ (l) (map json->account l)))
 
-(define (mtd-accounts-id-statuses instance id)
+(define-get-request
   "Get statuses of account corresponding to ID. Return list of statuses."
-  (let ((url (string-append (mastodon-url instance)
-                            "/api/v1/accounts/" id "/statuses")))
-    (map json->status (mastodon-api-get url (mastodon-token instance)))))
+  (mtd-accounts-id-statuses instance id)
+  "/api/v1/accounts/" "/statuses"
+  (λ (l) (map json->status l)))
 
-(define (mtd-accounts-search instance name)
+(define-get-request
   "Search an accounts by username, domain and display name, corresponding to
 NAME argument. Return list of accounts."
-  (let ((url (string-append (mastodon-url instance)
-                            "/api/v1/accounts/search?q=" name)))
-    (map json->account (mastodon-api-get url (mastodon-token instance)))))
+  (mtd-accounts-search instance name)
+  "/api/v1/accounts/search?q=" ""
+  (λ (l) (map json->account l)))
 
 ;;;
 ;;; Apps.
