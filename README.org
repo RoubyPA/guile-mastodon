@@ -50,7 +50,7 @@ make install
 
 ** Documentation
 
-[[doc/api.org][Module documentation.]]
+[[doc/guile-mastodon.org][Module documentation.]
 
 ** Module structure
 
