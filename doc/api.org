@@ -1,11 +1,13 @@
-#+title: Guile-mastodon functions.
+#+title: Guile-mastodon
 #+startup: indent
 
-* Top level functions
+* API
 
-Top level functions is more user frendly function.
+** Top level functions
 
-** Function =new-status=
+Top level functions is more user frendly. There are define in =mastodon.scm=.
+
+*** Function =new-status=
 
 For more information see the [[https://docs.joinmastodon.org/api/rest/statuses/][Mastodon documentations]].
 
@@ -24,11 +26,13 @@ For more information see the [[https://docs.joinmastodon.org/api/rest/statuses/]
 
 
 
-* Low level functions
+** Low level functions
 
-** Accounts
+This functions are define in =mastodon/api.scm=.
 
-*** Function =mtd-accounts-by-id=
+*** Accounts
+
+**** Function =mtd-accounts-by-id=
 
 Get account by id.
 
@@ -37,7 +41,7 @@ Get account by id.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account id      |
 
-*** Function =mtd-accounts-verify-credentials=
+**** Function =mtd-accounts-verify-credentials=
 
 Get current account.
 
@@ -45,7 +49,7 @@ Get current account.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 
-*** Function =mtd-accounts-id-followers=
+**** Function =mtd-accounts-id-followers=
 
 Get account followers.
 
@@ -54,7 +58,7 @@ Get account followers.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account id      |
 
-*** Function =mtd-accounts-id-follow=
+**** Function =mtd-accounts-id-follow=
 
 Follow an account.
 
@@ -63,7 +67,7 @@ Follow an account.
 | instance | <mastodon-mastodon> | Instance to use   |
 | id       | String              | Account to follow |
 
-*** Function =mtd-accounts-id-unfollow=
+**** Function =mtd-accounts-id-unfollow=
 
 Unfollow an account.
 
@@ -72,7 +76,7 @@ Unfollow an account.
 | instance | <mastodon-mastodon> | Instance to use     |
 | id       | String              | Account to unfollow |
 
-*** Function =mtd-accounts-id-following=
+**** Function =mtd-accounts-id-following=
 
 Following accounts for accounts id.
 
@@ -81,7 +85,7 @@ Following accounts for accounts id.
 | instance | <mastodon-mastodon> | Instance to use     |
 | id       | String              | Account id          |
 
-*** Function =mtd-accounts-id-statuses=
+**** Function =mtd-accounts-id-statuses=
 
 Status of account.
 
@@ -90,7 +94,7 @@ Status of account.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account id      |
 
-*** Function =mtd-accounts-search=
+**** Function =mtd-accounts-search=
 
 Search an accounts by username, domain and display name.
 
@@ -100,10 +104,9 @@ Search an accounts by username, domain and display name.
 | name     | String              | Query           |
 
 
+*** Apps
 
-** Apps
-
-*** Function =mtd-apps-verify-credentials=
+**** Function =mtd-apps-verify-credentials=
 
 Confirm that the app’s OAuth2 credentials work.
 
@@ -112,9 +115,9 @@ Confirm that the app’s OAuth2 credentials work.
 | instance | <mastodon-mastodon> | Instance to use |
 
 
-** Blocks
+*** Blocks
 
-*** Function =mtd-account-blocked=
+**** Function =mtd-account-blocked=
 
 Accounts the user has blocked.
 
@@ -122,7 +125,7 @@ Accounts the user has blocked.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 
-*** Function =mtd-account-block=
+**** Function =mtd-account-block=
 
 Block an account.
 
@@ -131,7 +134,7 @@ Block an account.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account id      |
 
-*** Function =mtd-account-unblock=
+**** Function =mtd-account-unblock=
 
 Unblock an account.
 
@@ -141,9 +144,9 @@ Unblock an account.
 | id       | String              | Account id      |
 
 
-** Emojis
+*** Emojis
 
-*** Function =mtd-custom-emojis=
+**** Function =mtd-custom-emojis=
 
 Custom emojis that are available on the server.
 
@@ -153,9 +156,9 @@ Custom emojis that are available on the server.
 
 
 
-** Domain blocks
+*** Domain blocks
 
-*** Function =mtd-domain-blocked=
+**** Function =mtd-domain-blocked=
 
 Domains the user has blocked.
 
@@ -163,7 +166,7 @@ Domains the user has blocked.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 
-*** Function =mtd-domain-block=
+**** Function =mtd-domain-block=
 
 Block a domain to hide all public posts from it, all notifications from it,
 and remove all followers from it.
@@ -173,7 +176,7 @@ and remove all followers from it.
 | instance | <mastodon-mastodon> | Instance to use |
 | domain   | String              | Domain url      |
 
-*** Function =mtd-domain-unblock=
+**** Function =mtd-domain-unblock=
 
 Remove a domain block.
 
@@ -183,9 +186,9 @@ Remove a domain block.
 | domain   | String              | Domain url      |
 
 
-** Endorsements
+*** Endorsements
 
-*** Function =mtd-endorsed=
+**** Function =mtd-endorsed=
 
 List of Endorsements accounts.
 
@@ -193,7 +196,7 @@ List of Endorsements accounts.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 
-*** Function =mtd-endorse=
+**** Function =mtd-endorse=
 
 Endorse an account, i.e. choose to feature the account on the user’s public
 profile.
@@ -203,7 +206,7 @@ profile.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account id      |
 
-*** Function =mtd-unendorse=
+**** Function =mtd-unendorse=
 
 Undo endorse of an account.
 
@@ -213,9 +216,9 @@ Undo endorse of an account.
 | id       | String              | Account id      |
 
 
-** Favourites
+*** Favourites
 
-*** Function =mtd-favourited=
+**** Function =mtd-favourited=
 
 Statuses the user has favourited. Return list of status.
 
@@ -223,7 +226,7 @@ Statuses the user has favourited. Return list of status.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 
-*** Function =mtd-favourite-status=
+**** Function =mtd-favourite-status=
 
 Favourite a status. Return Status.
 
@@ -232,7 +235,7 @@ Favourite a status. Return Status.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-unfavourite-status=
+**** Function =mtd-unfavourite-status=
 
 Undo the favourite of a status. Return Status.
 
@@ -243,9 +246,9 @@ Undo the favourite of a status. Return Status.
 
 
 
-** Instance
+*** Instance
 
-*** Function =mtd-instance-info=
+**** Function =mtd-instance-info=
 
 Get information about the server.
 
@@ -254,9 +257,9 @@ Get information about the server.
 | instance | <mastodon-mastodon> | Instance to use |
 
 
-** Statuses
+*** Statuses
 
-*** Function =mtd-status-by-id=
+**** Function =mtd-status-by-id=
 
 Get status coresponding to ID. Return status.
 
@@ -265,7 +268,7 @@ Get status coresponding to ID. Return status.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-context-by-id=
+**** Function =mtd-status-context-by-id=
 
 Get status context coresponding to ID. Return context.
 
@@ -274,7 +277,7 @@ Get status context coresponding to ID. Return context.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-card-by-id=
+**** Function =mtd-status-card-by-id=
 
 Get status card coresponding to ID. Return card.
 
@@ -283,7 +286,7 @@ Get status card coresponding to ID. Return card.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-id-reblogged-by=
+**** Function =mtd-status-id-reblogged-by=
 
 Get list of accounts who reblogged status coresponding to ID. Return list of
 accounts.
@@ -293,7 +296,7 @@ accounts.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-id-favourited-by=
+**** Function =mtd-status-id-favourited-by=
 
 Get list of accounts who favourited status coresponding to ID. Return list of
 accounts.
@@ -303,7 +306,7 @@ accounts.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-delete-status-by-id=
+**** Function =mtd-delete-status-by-id=
 
 Delete status coresponding to ID.
 
@@ -312,7 +315,7 @@ Delete status coresponding to ID.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-new-status=
+**** Function =mtd-new-status=
 
 Post a new status on instance. Return status.
 
@@ -323,7 +326,7 @@ Post a new status on instance. Return status.
 | instance | <mastodon-mastodon> | Instance to use |
 | args     | List                | List of args    |
 
-**** Parameters
+***** Parameters
 
 ARGS is list of parameters. You need to provide "status" and/or
 "media_ids".
@@ -345,7 +348,7 @@ ARGS is list of parameters. You need to provide "status" and/or
 | visibility     | One of direct, private, unlisted public                 |
 | language       | ride language code of the toot (ISO 639-2)              |
 
-*** Function =mtd-status-id-reblog=
+**** Function =mtd-status-id-reblog=
 
 Reblog status coresponding to ID. Return status.
 
@@ -354,7 +357,7 @@ Reblog status coresponding to ID. Return status.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-id-unreblog=
+**** Function =mtd-status-id-unreblog=
 
 Unreblog status coresponding to ID. Return status.
 
@@ -363,7 +366,7 @@ Unreblog status coresponding to ID. Return status.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-id-pin=
+**** Function =mtd-status-id-pin=
 
 Pin status coresponding to ID. Return status.
 
@@ -372,7 +375,7 @@ Pin status coresponding to ID. Return status.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status id       |
 
-*** Function =mtd-status-id-unpin=
+**** Function =mtd-status-id-unpin=
 
 Unpin status coresponding to ID. Return status.
 
@@ -382,9 +385,9 @@ Unpin status coresponding to ID. Return status.
 | id       | String              | Status id       |
 
 
-** Search
+*** Search
 
-*** Function =mtd-search=
+**** Function =mtd-search=
 
 Search for content in accounts, statuses and hashtags. Return results.
 
@@ -395,9 +398,9 @@ Search for content in accounts, statuses and hashtags. Return results.
 
 
 
-** Media
+*** Media
 
-*** Function =mtd-post-media=
+**** Function =mtd-post-media=
 
 Post new media from FILEPATH.
 
@@ -407,15 +410,15 @@ Post new media from FILEPATH.
 | filepath    | String              | Path of file to upload |
 | description | String              | Media description      |
 
-**** Note
+***** Note
 
 The description is actualy not implemented yet. Is an important point for
 accessibility of impaired people. So all contribution is welcome.
 
 
-** Mutes
+*** Mutes
 
-*** Function =mtd-muted=
+**** Function =mtd-muted=
 
 Accounts the user has muted. Return list of account.
 
@@ -423,7 +426,7 @@ Accounts the user has muted. Return list of account.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 
-*** Function =mtd-mute=
+**** Function =mtd-mute=
 
 Mute an account. Return relationship.
 
@@ -432,7 +435,7 @@ Mute an account. Return relationship.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account         |
 
-*** Function =mtd-unmute=
+**** Function =mtd-unmute=
 
 Unmute an account. Return relationship.
 
@@ -441,7 +444,7 @@ Unmute an account. Return relationship.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Account         |
 
-*** Function =mtd-status-mute=
+**** Function =mtd-status-mute=
 
 Mute the conversation the status is part of, to no longer be notified about
 it. Return status.
@@ -451,7 +454,7 @@ it. Return status.
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status          |
 
-*** Function =mtd-status-unmute=
+**** Function =mtd-status-unmute=
 
 Unmute the conversation the status is part of. Return status.
 
@@ -459,3 +462,275 @@ Unmute the conversation the status is part of. Return status.
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
 | id       | String              | Status          |
+
+
+
+* Type
+
+** Type =<mastodon-mastodon>=
+
+| Name           | Description |
+|----------------+-------------|
+| make-mastodon  |             |
+| mastodon?      |             |
+| mastodon-name  |             |
+| mastodon-url   |             |
+| mastodon-token |             |
+
+** Type =<mastodon-account>=
+
+| Name                     | Description |
+|--------------------------+-------------|
+| account?                 |             |
+| account-id               |             |
+| account-username         |             |
+| account-acct             |             |
+| account-display-name     |             |
+| account-locked           |             |
+| account-created-at       |             |
+| account-followers-counts |             |
+| account-following-counts |             |
+| account-statuses-counts  |             |
+| account-note             |             |
+| account-url              |             |
+| account-avatar           |             |
+| account-avatar-static    |             |
+| account-header           |             |
+| account-header-static    |             |
+| account-emojis           |             |
+| account-moved            |             |
+| account-fields           |             |
+| account-bot              |             |
+
+** Type =<mastodon-field>=
+
+| Name              | Description |
+|-------------------+-------------|
+| field?            |             |
+| field-name        |             |
+| field-value       |             |
+| field-verified-at |             |
+
+** Type =<mastodon-source>=
+
+| Name             | Description |
+|------------------+-------------|
+| source?          |             |
+| source-privacy   |             |
+| source-sensitive |             |
+| source-language  |             |
+| source-note      |             |
+| source-fields    |             |
+
+** Type =<mastodon-application>=
+
+| Name                | Description |
+|---------------------+-------------|
+| application?        |             |
+| application-name    |             |
+| application-website |             |
+
+** Type =<mastodon-attachment>=
+
+| Name                   | Description |
+|------------------------+-------------|
+| attachment?            |             |
+| attachment-id          |             |
+| attachment-type        |             |
+| attachment-url         |             |
+| attachment-remote-url  |             |
+| attachment-preview-url |             |
+| attachment-text-url    |             |
+| attachment-meta        |             |
+| attachment-description |             |
+
+** Type =<mastodon-emoji>=
+
+| Name                    | Description |
+|-------------------------+-------------|
+| emoji?                  |             |
+| emoji-shortcode         |             |
+| emoji-static-url        |             |
+| emoji-url               |             |
+| emoji-visible-in-picker |             |
+
+** Type =<mastodon-status>=
+
+| Name                          | Description |
+|-------------------------------+-------------|
+| status?                       |             |
+| status-id                     |             |
+| status-uri                    |             |
+| status-url                    |             |
+| status-account                |             |
+| status-in-reply-to-id         |             |
+| status-in-reply-to-account-id |             |
+| status-reblog                 |             |
+| status-content                |             |
+| status-created-at             |             |
+| status-emojis                 |             |
+| status-replies-count          |             |
+| status-reblogs-count          |             |
+| status-favourites-count       |             |
+| status-reblogged              |             |
+| status-favourited             |             |
+| status-muted                  |             |
+| status-sensitive              |             |
+| status-spoiler-text           |             |
+| status-visibility             |             |
+| status-media-attachments      |             |
+| status-mentions               |             |
+| status-tags                   |             |
+| status-card                   |             |
+| status-application            |             |
+| status-language               |             |
+| status-pinned                 |             |
+
+** Type =<mastodon-relationship>=
+
+| Name                              | Description |
+|-----------------------------------+-------------|
+| relationship?                     |             |
+| relationship-id                   |             |
+| relationship-following            |             |
+| relationship-followed-by          |             |
+| relationship-blocking             |             |
+| relationship-muting               |             |
+| relationship-muting-notifications |             |
+| relationship-requested            |             |
+| relationship-domain-blocking      |             |
+| relationship-showing-reblogs      |             |
+| relationship-endorsed             |             |
+
+** Type =<mastodon-instance>=
+
+| Name                     | Description |
+|--------------------------+-------------|
+| instance?                |             |
+| instance-uri             |             |
+| instance-title           |             |
+| instance-description     |             |
+| instance-email           |             |
+| instance-version         |             |
+| instance-thumbnail       |             |
+| instance-urls            |             |
+| instance-stats           |             |
+| instance-languages       |             |
+| instance-contact-account |             |
+
+** Type =<mastodon-context>=
+
+| Name                | Description |
+|---------------------+-------------|
+| context?            |             |
+| context-ancestors   |             |
+| context-descendants |             |
+
+** Type =<mastodon-card>=
+
+| Name               | Description |
+|--------------------+-------------|
+| card?              |             |
+| card-url           |             |
+| card-title         |             |
+| card-description   |             |
+| card-image         |             |
+| card-type          |             |
+| card-author-name   |             |
+| card-author-url    |             |
+| card-provider-name |             |
+| card-provider-url  |             |
+| card-html          |             |
+| card-width         |             |
+| card-height        |             |
+
+** Type =<mastodon-results>=
+
+| Name             | Description |
+|------------------+-------------|
+| results?         |             |
+| results-accounts |             |
+| results-statuses |             |
+| results-hashtags |             |
+
+
+** JSON parsers
+
+| Name               | Description |
+|--------------------+-------------|
+| json->account      |             |
+| json->field        |             |
+| json->source       |             |
+| json->application  |             |
+| json->attachment   |             |
+| json->emoji        |             |
+| json->status       |             |
+| json->relationship |             |
+| json->instance     |             |
+| json->context      |             |
+| json->card         |             |
+| json->results      |             |
+
+
+* Index
+
+** Types
+
+- =<mastodon-mastodon>= => [[Type =<mastodon-mastodon>=]]
+- =<mastodon-account>= => [[Type =<mastodon-account>=]]
+- =<mastodon-field>= => [[Type =<mastodon-field>=]]
+- =<mastodon-source>= => [[Type =<mastodon-source>=]]
+- =<mastodon-application>= => [[Type =<mastodon-application>=]]
+- =<mastodon-attachment>= => [[Type =<mastodon-attachment>=]]
+- =<mastodon-emoji>= => [[Type =<mastodon-emoji>=]]
+- =<mastodon-status>= => [[Type =<mastodon-status>=]]
+- =<mastodon-relationship>= => [[Type =<mastodon-relationship>=]]
+- =<mastodon-instance>= => [[Type =<mastodon-instance>=]]
+- =<mastodon-context>= => [[Type =<mastodon-context>=]]
+- =<mastodon-card>= => [[Type =<mastodon-card>=]]
+- =<mastodon-results>= => [[Type =<mastodon-results>=]]
+- JSON Parsers => [[JSON parsers]]
+
+** Functions
+
+- Function =mtd-accounts-by-id= => [[Accounts]]
+- Function =mtd-accounts-verify-credentials= => [[Accounts]]
+- Function =mtd-accounts-id-followers= => [[Accounts]]
+- Function =mtd-accounts-id-follow= => [[Accounts]]
+- Function =mtd-accounts-id-unfollow= => [[Accounts]]
+- Function =mtd-accounts-id-following= => [[Accounts]]
+- Function =mtd-accounts-id-statuses= => [[Accounts]]
+- Function =mtd-accounts-search= => [[Accounts]]
+- Function =mtd-apps-verify-credentials= => [[Apps]]
+- Function =mtd-account-blocked= => [[Blocks]]
+- Function =mtd-account-block= => [[Blocks]]
+- Function =mtd-account-unblock= => [[Blocks]]
+- Function =mtd-custom-emojis= => [[Emojis]]
+- Function =mtd-domain-blocked= => [[Domain blocks]]
+- Function =mtd-domain-block= => [[Domain blocks]]
+- Function =mtd-domain-unblock= => [[Domain blocks]]
+- Function =mtd-endorsed= => [[Endorsements]]
+- Function =mtd-endorse= => [[Endorsements]]
+- Function =mtd-unendorse= => [[Endorsements]]
+- Function =mtd-favourited= => [[Favourites]]
+- Function =mtd-favourite-status= => [[Favourites]]
+- Function =mtd-unfavourite-status= => [[Favourites]]
+- Function =mtd-instance-info= => [[Instance]]
+- Function =mtd-status-by-id= => [[Statuses]]
+- Function =mtd-status-context-by-id= => [[Statuses]]
+- Function =mtd-status-card-by-id= => [[Statuses]]
+- Function =mtd-status-id-reblogged-by= => [[Statuses]]
+- Function =mtd-status-id-favourited-by= => [[Statuses]]
+- Function =mtd-delete-status-by-id= => [[Statuses]]
+- Function =mtd-new-status= => [[Statuses]]
+- Function =mtd-status-id-reblog= => [[Statuses]]
+- Function =mtd-status-id-unreblog= => [[Statuses]]
+- Function =mtd-status-id-pin= => [[Statuses]]
+- Function =mtd-status-id-unpin= => [[Statuses]]
+- Function =mtd-search= => [[Search]]
+- Function =mtd-post-media= => [[Media]]
+- Function =mtd-muted= => [[Mutes]]
+- Function =mtd-mute= => [[Mutes]]
+- Function =mtd-unmute= => [[Mutes]]
+- Function =mtd-status-mute= => [[Mutes]]
+- Function =mtd-status-unmute= => [[Mutes]]
