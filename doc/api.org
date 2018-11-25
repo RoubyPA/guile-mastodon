@@ -316,6 +316,8 @@ Delete status coresponding to ID.
 
 Post a new status on instance. Return status.
 
+/You can use [[Function =new-status=][new-status]] instead of this function./
+
 | Args     | Type                | Description     |
 |----------+---------------------+-----------------|
 | instance | <mastodon-mastodon> | Instance to use |
@@ -384,17 +386,76 @@ Unpin status coresponding to ID. Return status.
 
 *** Function =mtd-search=
 
+Search for content in accounts, statuses and hashtags. Return results.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| query    | String              | Query           |
+
 
 
 ** Media
 
 *** Function =mtd-post-media=
 
+Post new media from FILEPATH.
+
+| Args        | Type                | Description            |
+|-------------+---------------------+------------------------|
+| instance    | <mastodon-mastodon> | Instance to use        |
+| filepath    | String              | Path of file to upload |
+| description | String              | Media description      |
+
+**** Note
+
+The description is actualy not implemented yet. Is an important point for
+accessibility of impaired people. So all contribution is welcome.
+
 
 ** Mutes
 
 *** Function =mtd-muted=
+
+Accounts the user has muted. Return list of account.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+
 *** Function =mtd-mute=
+
+Mute an account. Return relationship.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account         |
+
 *** Function =mtd-unmute=
+
+Unmute an account. Return relationship.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Account         |
+
 *** Function =mtd-status-mute=
+
+Mute the conversation the status is part of, to no longer be notified about
+it. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status          |
+
 *** Function =mtd-status-unmute=
+
+Unmute the conversation the status is part of. Return status.
+
+| Args     | Type                | Description     |
+|----------+---------------------+-----------------|
+| instance | <mastodon-mastodon> | Instance to use |
+| id       | String              | Status          |
