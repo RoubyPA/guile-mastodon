@@ -24,6 +24,8 @@
              (gnu packages)
              (gnu packages tls)
              (gnu packages guile)
+             (gnu packages emacs)
+             (gnu packages texinfo)
              (gnu packages autotools)
              (gnu packages pkg-config))
 
@@ -36,7 +38,10 @@
   (native-inputs
    `(("autoconf" ,autoconf)
      ("automake" ,automake)
-     ("pkg-config" ,pkg-config)))
+     ("pkg-config" ,pkg-config)
+     ("emacs" ,emacs-no-x)
+     ("emacs-org" ,emacs-org)
+     ("texinfo" ,texinfo)))
   (propagated-inputs
    `(("guile" ,guile-2.2)
      ("guile-json" ,guile-json)
