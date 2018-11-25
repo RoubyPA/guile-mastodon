@@ -653,7 +653,6 @@ Unmute the conversation the status is part of. Return status.
 | results-statuses |             |
 | results-hashtags |             |
 
-
 ** JSON parsers
 
 | Name               | Description |
