@@ -239,7 +239,7 @@ and define JSON->RECORD as a conversion from JSON to a record of this type."
   (id              account-id)
   (username        account-username)
   (acct            account-acct)
-  (display-name    account-display-name)
+  (display-name    account-display-name "display_name")
   (locked          account-locked)
   (created-at      account-created-at "created_at")
   (followers-count account-followers-count "followers_count")
