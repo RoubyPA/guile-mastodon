@@ -23,7 +23,7 @@
   #:export (guile-mastodon-version
             new-status))
 
-(define guile-mastodon-version "0.0.1")
+(define guile-mastodon-version "0.0.2")
 
 (define* (new-status inst #:optional #:key
                      (status         "")
